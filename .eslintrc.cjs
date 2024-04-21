@@ -25,5 +25,6 @@ module.exports = {
   rules: {
     'no-underscore-dangle': 'off',
     'no-use-before-define': 'off',
+    'import/prefer-default-export': 'off',
   },
 };
