@@ -23,5 +23,7 @@ module.exports = {
     sourceType: 'module',
   },
   rules: {
+    'no-underscore-dangle': 'off',
+    'no-use-before-define': 'off',
   },
 };
