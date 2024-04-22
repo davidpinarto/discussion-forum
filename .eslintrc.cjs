@@ -28,5 +28,6 @@ module.exports = {
     'import/prefer-default-export': 'off',
     'react/button-has-type': 'off',
     'react/prop-types': 'off',
+    'no-alert': 'off',
   },
 };
