@@ -26,5 +26,7 @@ module.exports = {
     'no-underscore-dangle': 'off',
     'no-use-before-define': 'off',
     'import/prefer-default-export': 'off',
+    'react/button-has-type': 'off',
+    'react/prop-types': 'off',
   },
 };
