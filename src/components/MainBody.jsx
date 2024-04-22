@@ -35,9 +35,9 @@ export function MainBody() {
     },
   ];
   return (
-    <>
+    <div className="main-body">
       <h1>Discussion Threads</h1>
       <ThreadList threads={fakeThreads} />
-    </>
+    </div>
   );
 }

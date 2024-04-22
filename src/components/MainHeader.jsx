@@ -4,7 +4,7 @@ export function MainHeader() {
   const [keyword, setKeyword] = useState('');
 
   return (
-    <>
+    <div className="main-header">
       <div className="search-container">
         <h2>Search Threads</h2>
         <input
@@ -16,6 +16,6 @@ export function MainHeader() {
         />
       </div>
       <button className="btn">+ Add New Thread</button>
-    </>
+    </div>
   );
 }
