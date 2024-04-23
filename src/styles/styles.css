@@ -1,186 +1,190 @@
-@import url('https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap');
+@import url("https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap");
 
 * {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-    font-family: "Poppins", sans-serif;
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: "Poppins", sans-serif;
 }
 
 :root {
-    --white: #ffffff;
-    --black: #000000;
-    --gray-light: #D9D9D9;
-    --red-light: #CF7474;
+  --white: #ffffff;
+  --black: #000000;
+  --gray-light: #d9d9d9;
+  --red-light: #cf7474;
 }
 
 li {
-    list-style: none;
+  list-style: none;
 }
 
 a {
-    color: inherit;
+  color: inherit;
 }
 
 button {
-    background: var(--red-light);
-    border: 1px solid var(--black);
-    cursor: pointer;
-    padding: .5rem;
-    border-radius: 55px;
+  background: var(--red-light);
+  border: 1px solid var(--black);
+  cursor: pointer;
+  padding: 0.5rem;
+  border-radius: 55px;
 }
 
-body, .root, .app-container {
-    min-height: 100vh;
+body,
+.root,
+.app-container {
+  min-height: 100vh;
 }
 
 .app-container {
-    display: flex;
-    flex-direction: column;
-    /* padding: 0 2rem; */
+  display: flex;
+  flex-direction: column;
+  /* padding: 0 2rem; */
 }
 
 header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 2rem 3rem;
-    border-bottom: 5px solid var(--black);
-    background-color: var(--gray-light);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 2rem 3rem;
+  border-bottom: 5px solid var(--black);
+  background-color: var(--gray-light);
 }
 
 #logo {
-    background-color: var(--red-light);
-    padding: 1rem;
-    border-radius: 1rem;
-    color: var(--black);
-    font-weight: bold;
-    font-size: 32px;
+  background-color: var(--red-light);
+  padding: 1rem;
+  border-radius: 1rem;
+  color: var(--black);
+  font-weight: bold;
+  font-size: 32px;
 }
 
 nav > ul {
-    display: flex;
-    align-items: center;
-    gap: 2rem;
+  display: flex;
+  align-items: center;
+  gap: 2rem;
 }
 
 select {
-    padding: .5rem;
-    border-radius: .5rem;
+  padding: 0.5rem;
+  border-radius: 0.5rem;
 }
 
 nav > ul > li > button {
   font-size: 1.5rem;
   cursor: pointer;
-  padding: .5rem 1rem;
+  padding: 0.5rem 1rem;
   display: flex;
 }
 
 .profile-info {
-    display: flex;
-    align-items: center;
-    gap: .5rem;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
 }
 
 .profile-info img {
-    border-radius: 55px;
-    border: 2px solid var(--black);
-    background: var(--black);
+  border-radius: 55px;
+  border: 2px solid var(--black);
+  background: var(--black);
 }
 
 .profile-info p {
-    cursor: pointer;
+  cursor: pointer;
 }
 
 .profile-info p:hover {
-    color: var(--red-light);
-    transition: all 0.3s ease;
+  color: var(--red-light);
+  transition: all 0.3s ease;
 }
 
 main {
-    padding: 2rem 6rem;
+  padding: 2rem 6rem;
 }
 
 .main-header {
-    display: flex;
-    flex-direction: column;
+  display: flex;
+  flex-direction: column;
 }
 
-.search-container { 
-    flex: auto;
-    display: flex;
-    justify-content: space-between;
-    gap: 2rem;
-    padding: 1rem 0;
+.search-container {
+  flex: auto;
+  display: flex;
+  justify-content: space-between;
+  gap: 2rem;
+  padding: 1rem 0;
 }
 
 .search-container input {
-    flex: auto;
-    padding: .5rem;
-    border-radius: .5rem;
-    border-bottom: 5px solid var(--black);
-    border-right: 5px solid var(--black);
+  flex: auto;
+  padding: 0.5rem;
+  border-radius: 0.5rem;
+  border-bottom: 5px solid var(--black);
+  border-right: 5px solid var(--black);
 }
 
 .main-body > h1 {
-    text-align: center;
-    padding: 1rem;
+  text-align: center;
+  padding: 1rem;
 }
 
 .thread-list {
-    display: flex;
-    flex-direction: column;
-    gap: 2rem;
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
 }
 
 .thread-list > li {
-    background-color: var(--gray-light);
-    padding: 2rem;
-    display: flex;
-    flex-direction: column;
-    gap: 1rem;
-    border-radius: .8rem;
-    border-top: 5px solid var(--black);
-    border-left: 5px solid var(--black);
-    transition: all 0.3s ease;
+  background-color: var(--gray-light);
+  padding: 2rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  border-radius: 0.8rem;
+  border-top: 5px solid var(--black);
+  border-left: 5px solid var(--black);
+  transition: all 0.3s ease;
 }
 
 .thread-list > li:hover {
-    border-top: 5px solid var(--red-light);
-    border-left: 5px solid var(--red-light);
+  border-top: 5px solid var(--red-light);
+  border-left: 5px solid var(--red-light);
 }
 
 .thread-list > li > h2 {
-    width: fit-content;
-    cursor: pointer;
+  width: fit-content;
+  cursor: pointer;
 }
 
 .thread-list > li > h2:hover {
-    color: var(--red-light);
-    transition: all 0.3s ease;
+  color: var(--red-light);
+  transition: all 0.3s ease;
 }
 
 .thread-info {
-    display: flex;
-    gap: 1rem;
-    font-size: .8rem;
+  display: flex;
+  gap: 1rem;
+  font-size: 0.8rem;
 }
 
 .thread-info > div {
-    display: flex;
-    gap: .2rem;
-    align-items: center;
-    transition: all 0.3s ease;
+  display: flex;
+  gap: 0.2rem;
+  align-items: center;
+  transition: all 0.3s ease;
 }
 
-.likes:hover, .dislikes:hover {
-    color: var(--red-light);
-    cursor: pointer;
+.likes:hover,
+.dislikes:hover {
+  color: var(--red-light);
+  cursor: pointer;
 }
 
-
-
-
-footer{
-    margin-top: auto;
+footer {
+  margin-top: auto;
+  text-align: center;
+  padding: 1rem;
+  background-color: var(--gray-light);
+  border-top: 5px solid var(--black);
 }
