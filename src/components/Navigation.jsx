@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { FaSun, FaMoon } from 'react-icons/fa';
 import { useDispatch, useSelector } from 'react-redux';
 import { setThemeLightActionCreator, setThemeDarkActionCreator } from '../states/theme/action';
