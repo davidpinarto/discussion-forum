@@ -4,6 +4,7 @@ import { Header } from './components/Header';
 import { Main } from './components/Main';
 import { Footer } from './components/Footer';
 import { asyncPreloadProcess } from './states/isPreload/action';
+import Loading from './components/Loading';
 
 function App() {
   const {
@@ -21,11 +22,14 @@ function App() {
   }
 
   return (
-    <div className="app-container">
-      <Header />
-      <Main />
-      <Footer />
-    </div>
+    <>
+      <Loading />
+      <div className="app-container">
+        <Header />
+        <Main />
+        <Footer />
+      </div>
+    </>
   );
 }
 

@@ -1,4 +1,5 @@
 import { configureStore } from '@reduxjs/toolkit';
+import { loadingBarReducer } from 'react-redux-loading-bar';
 import { authUserReducer } from './authUser/reducer';
 import { isPreloadReducer } from './isPreload/reducer';
 import { themeModeReducer } from './theme/reducer';
@@ -10,5 +11,6 @@ export const store = configureStore({
     isPreload: isPreloadReducer,
     themeMode: themeModeReducer,
     language: languageReducer,
+    loadingBar: loadingBarReducer,
   },
 });
