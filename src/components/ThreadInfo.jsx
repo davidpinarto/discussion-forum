@@ -20,7 +20,11 @@ export function ThreadInfo({
         <p>{comments}</p>
       </div>
       <p>{createdAt}</p>
-      <p>{createdBy}</p>
+      <p>
+        Created by
+        {' '}
+        <strong>{createdBy}</strong>
+      </p>
     </div>
   );
 }

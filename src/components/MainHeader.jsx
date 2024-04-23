@@ -5,8 +5,8 @@ export function MainHeader() {
 
   return (
     <div className="main-header">
+      <h2>Search Threads</h2>
       <div className="search-container">
-        <h2>Search Threads</h2>
         <input
           type="text"
           id="search-bar"
@@ -14,8 +14,8 @@ export function MainHeader() {
           value={keyword}
           onChange={({ target }) => setKeyword(target.value)}
         />
+        <button className="btn">+ Add New Thread</button>
       </div>
-      <button className="btn">+ Add New Thread</button>
     </div>
   );
 }
