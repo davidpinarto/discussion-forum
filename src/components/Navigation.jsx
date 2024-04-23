@@ -2,17 +2,13 @@ import React, { useState } from 'react';
 import { FaSun, FaMoon } from 'react-icons/fa';
 import { useDispatch, useSelector } from 'react-redux';
 import { setThemeLightActionCreator, setThemeDarkActionCreator } from '../states/theme/action';
+import { setLanguage } from '../states/language/action';
 
 export function Navigation() {
-  /**
-   * We need 3 state here,
-   *   - state for select
-   *   - state for theme mode  done
-   *   - state for profile-info  done
-   */
   const {
     authUser = null,
     themeMode = 'light',
+    language = 'Indonesia',
   } = useSelector((states) => states);
   const dispatch = useDispatch();
 
@@ -23,17 +19,16 @@ export function Navigation() {
       dispatch(setThemeDarkActionCreator('dark'));
     }
   };
-  const [selectedValue, setSelectedValue] = useState('Indonesia');
 
-  const handleSelectChange = (event) => {
-    setSelectedValue(event.target.value);
+  const onLanguageChangeHandler = ({ target }) => {
+    dispatch(setLanguage(target.value));
   };
 
   return (
     <nav>
       <ul>
         <li>
-          <select value={selectedValue} onChange={handleSelectChange}>
+          <select value={language} onChange={onLanguageChangeHandler}>
             <option value="Indonesia">Indonesia</option>
             <option value="English">English</option>
           </select>
