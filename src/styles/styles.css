@@ -22,12 +22,17 @@ a {
   color: inherit;
 }
 
-button {
+.btn {
   background: var(--red-light);
   border: 1px solid var(--black);
   cursor: pointer;
   padding: 0.5rem;
   border-radius: 55px;
+}
+
+button {
+  background: none;
+  border: none;
 }
 
 body,
@@ -90,7 +95,7 @@ nav > ul > li > button {
   background: var(--black);
 }
 
-.profile-info p {
+.profile-info button {
   cursor: pointer;
 }
 
@@ -211,6 +216,39 @@ main {
 }
 
 .login-form > button {
+  margin-top: 1rem;
+}
+
+/* register page */
+.register-container {
+  display: flex;
+  justify-content: center;
+}
+#register-page {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  text-align: center;
+  width: 60%;
+}
+
+.register-form {
+  display: flex;
+  flex-direction: column;
+  gap: .5rem;
+}
+
+.register-form > * {
+  width: fit-content;
+}
+
+.register-form > input {
+  width: auto;
+  padding: .5rem;
+  border-radius: .5rem;
+}
+
+.register-form > button {
   margin-top: 1rem;
 }
 

@@ -11,7 +11,7 @@ export function LoginForm({ login }) {
       <input type="email" value={email} onChange={onEmailChange} placeholder="Email" />
       <label htmlFor="password"><strong>Password</strong></label>
       <input type="password" value={password} onChange={onPasswordChange} placeholder="Password" />
-      <button type="button" onClick={() => login({ email, password })}>Login</button>
+      <button className="btn" type="button" onClick={() => login({ email, password })}>Login</button>
     </form>
   );
 }

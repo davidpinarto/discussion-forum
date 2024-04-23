@@ -5,11 +5,10 @@ import { LoginForm } from '../components/LoginForm';
 import { asyncSetAuthUser } from '../states/authUser/action';
 
 export function LoginPage() {
-  const dispatch = useDispatch(); // @TODO: get dispatch function from store
+  const dispatch = useDispatch();
   const navigate = useNavigate();
-  const onLogin = ({ id, password }) => {
-    // @TODO: dispatch async action to login
-    dispatch(asyncSetAuthUser({ id, password }));
+  const onLogin = ({ email, password }) => {
+    dispatch(asyncSetAuthUser({ email, password }));
     navigate('/');
   };
 
