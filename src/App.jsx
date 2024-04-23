@@ -6,9 +6,6 @@ import { Footer } from './components/Footer';
 import { asyncPreloadProcess } from './states/isPreload/action';
 
 function App() {
-  /**
-   * We will
-   */
   const {
     isPreload = false,
   } = useSelector((states) => states);
