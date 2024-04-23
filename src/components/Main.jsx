@@ -2,6 +2,7 @@ import React from 'react';
 import { Routes, Route } from 'react-router-dom';
 import { MainHeader } from './MainHeader';
 import { MainBody } from './MainBody';
+import { LoginPage } from '../pages/LoginPage';
 
 export function Main() {
   return (
@@ -16,6 +17,7 @@ export function Main() {
             </>
           )}
         />
+        <Route path="/login" element={<LoginPage />} />
       </Routes>
     </main>
   );

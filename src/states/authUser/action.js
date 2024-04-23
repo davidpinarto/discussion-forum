@@ -23,12 +23,12 @@ export function unsetAuthUserActionCreator() {
   };
 }
 
-export function asyncSetAuthUser({ id, password }) {
+export function asyncSetAuthUser({ email, password }) {
   return async (dispatch) => {
     // dispatch(showLoading());
 
     try {
-      const token = await api.login({ id, password });
+      const token = await api.login({ email, password });
       api.putAccessToken(token);
       const authUser = await api.getOwnProfile();
 
