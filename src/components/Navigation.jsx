@@ -16,10 +16,10 @@ export function Navigation() {
             <option value="English">English</option>
           </select>
         </li>
-        <li><FaSun /></li>
-        <li>
-          <img src="https://ui-avatars.com/api/?name=David+Pi" alt="avatar" />
-          <div className="profile-info">
+        <li><button id="theme-mode"><FaSun /></button></li>
+        <li className="profile-info">
+          <img src="https://ui-avatars.com/api/?name=David+Pi&background=80CBDC" alt="avatar" />
+          <div>
             <h3>Guest</h3>
             <p>Login</p>
           </div>

@@ -2,6 +2,6 @@ import React from 'react';
 
 export function Logo() {
   return (
-    <h1 id="logo">DiForum</h1>
+    <p id="logo">DiForum</p>
   );
 }
