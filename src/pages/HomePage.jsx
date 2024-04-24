@@ -1,8 +1,12 @@
 import React from 'react';
+import { useDispatch } from 'react-redux';
 import { CategoryList } from '../components/CategoryList';
 import { ThreadList } from '../components/ThreadList';
+import { setThreadsActionCreator } from '../states/threads/action';
 
 export function HomePage() {
+  const dispatch = useDispatch();
+
   const fakeThreads = [
     {
       id: 1,
@@ -38,15 +42,20 @@ export function HomePage() {
       category: 'ketiga',
     },
   ];
+
+  React.useEffect(() => {
+    dispatch(setThreadsActionCreator(fakeThreads));
+  }, []);
+
   return (
     <div className="home-page">
       <h1>Discussion Threads</h1>
       <div className="main-body">
         <aside>
           <button id="add-thread" className="btn">+ Add New Thread</button>
-          <CategoryList threads={fakeThreads} />
+          <CategoryList />
         </aside>
-        <ThreadList threads={fakeThreads} />
+        <ThreadList />
       </div>
     </div>
   );

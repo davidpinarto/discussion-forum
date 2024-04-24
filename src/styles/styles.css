@@ -166,8 +166,8 @@ aside > ul:hover {
   background-color: #f0f0f0;
 }
 
-.category-item:focus {
-  outline: 2px solid var(--border-color-hover);
+.selected {
+  outline: 3px solid var(--border-color-hover);
 }
 
 .thread-list {
