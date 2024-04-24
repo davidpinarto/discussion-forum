@@ -8,10 +8,12 @@
 }
 
 :root {
-  --white: #ffffff;
-  --black: #000000;
-  --gray-light: #d9d9d9;
-  --red-light: #cf7474;
+  --primary-background: #ffffff;
+  --primary-text-color-icon: #000000;
+  --secondary-background-color: #d9d9d9;
+  --button-background: #cf7474;
+  --border-color: #000;
+  --border-color-hover: #cf7474;
 }
 
 li {
@@ -23,8 +25,8 @@ a {
 }
 
 .btn {
-  background: var(--red-light);
-  border: 1px solid var(--black);
+  background: var(--button-background);
+  border: 1px solid var(--border-color);
   cursor: pointer;
   padding: 0.5rem;
   border-radius: 55px;
@@ -39,12 +41,12 @@ body,
 .root,
 .app-container {
   min-height: 100vh;
+  background-color: var(--primary-background);
 }
 
 .app-container {
   display: flex;
   flex-direction: column;
-  /* padding: 0 2rem; */
 }
 
 .loading {
@@ -56,16 +58,16 @@ header {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 2rem 3rem;
-  border-bottom: 5px solid var(--black);
-  background-color: var(--gray-light);
+  padding: 1rem 3rem;
+  border-bottom: 5px solid var(--border-color);
+  background-color: var(--secondary-background-color);
 }
 
 #logo {
-  background-color: var(--red-light);
+  background-color: var(--button-background);
   padding: 1rem;
   border-radius: 1rem;
-  color: var(--black);
+  color: var(--primary-text-color-icon);
   font-weight: bold;
   font-size: 32px;
 }
@@ -96,16 +98,16 @@ nav > ul > li > button {
 
 .profile-info img {
   border-radius: 55px;
-  border: 2px solid var(--black);
-  background: var(--black);
+  border: 2px solid var(--border-color);
+  background: var(--primary-text-color-icon);
 }
 
 .profile-info button {
   cursor: pointer;
 }
 
-.profile-info p:hover {
-  color: var(--red-light);
+.profile-info button:hover {
+  color: var(--border-color-hover);
   transition: all 0.3s ease;
 }
 
@@ -113,30 +115,59 @@ main {
   padding: 2rem 6rem;
 }
 
-.main-header {
+.main-body {
+  display: grid;
+  gap: 2rem;
+  grid-template-columns: 1fr 3fr;
+}
+.home-page > h1 {
+  text-align: center;
+  padding-bottom: 1.5rem;
+}
+
+.main-body > aside > ul {
+  /* width: 100%; */
+  height: fit-content;
+  background-color: var(--secondary-background-color);
+  gap: 1rem;
+  border-radius: 0.8rem;
+  border-top: 5px solid var(--border-color);
+  border-left: 5px solid var(--border-color);
+  transition: all 0.3s ease;
+  padding: 2rem;
+} 
+
+.category-list {
+  display: flex;
+  gap: 1rem;
+  flex-wrap: wrap;
+}
+
+aside  {
   display: flex;
   flex-direction: column;
+  align-items: center;
+  gap: 1rem;
 }
 
-.search-container {
-  flex: auto;
-  display: flex;
-  justify-content: space-between;
-  gap: 2rem;
-  padding: 1rem 0;
+aside > ul:hover {
+  border-top: 5px solid var(--border-color-hover);
+  border-left: 5px solid var(--border-color-hover);
 }
 
-.search-container input {
-  flex: auto;
-  padding: 0.5rem;
-  border-radius: 0.5rem;
-  border-bottom: 5px solid var(--black);
-  border-right: 5px solid var(--black);
+
+.category-item {
+  border: 1px solid var(--border-color);
+  padding: .5rem;
+  cursor: pointer;
 }
 
-.main-body > h1 {
-  text-align: center;
-  padding: 1rem;
+.category-item:active {
+  background-color: #f0f0f0;
+}
+
+.category-item:focus {
+  outline: 2px solid var(--border-color-hover);
 }
 
 .thread-list {
@@ -146,20 +177,20 @@ main {
 }
 
 .thread-list > li {
-  background-color: var(--gray-light);
+  background-color: var(--secondary-background-color);
   padding: 2rem;
   display: flex;
   flex-direction: column;
   gap: 1rem;
   border-radius: 0.8rem;
-  border-top: 5px solid var(--black);
-  border-left: 5px solid var(--black);
+  border-top: 5px solid var(--border-color);
+  border-left: 5px solid var(--border-color);
   transition: all 0.3s ease;
 }
 
 .thread-list > li:hover {
-  border-top: 5px solid var(--red-light);
-  border-left: 5px solid var(--red-light);
+  border-top: 5px solid var(--border-color-hover);
+  border-left: 5px solid var(--border-color-hover);
 }
 
 .thread-list > li > h2 {
@@ -168,7 +199,7 @@ main {
 }
 
 .thread-list > li > h2:hover {
-  color: var(--red-light);
+  color: var(--border-color-hover);
   transition: all 0.3s ease;
 }
 
@@ -187,7 +218,7 @@ main {
 
 .likes:hover,
 .dislikes:hover {
-  color: var(--red-light);
+  color: var(--border-color-hover);
   cursor: pointer;
 }
 
@@ -261,6 +292,6 @@ footer {
   margin-top: auto;
   text-align: center;
   padding: 1rem;
-  background-color: var(--gray-light);
-  border-top: 5px solid var(--black);
+  background-color: var(--secondary-background-color);
+  border-top: 5px solid var(--border-color);
 }

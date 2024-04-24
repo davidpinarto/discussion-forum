@@ -1,43 +1,53 @@
 import React from 'react';
-import { ThreadList } from './ThreadList';
+import { CategoryList } from '../components/CategoryList';
+import { ThreadList } from '../components/ThreadList';
 
-export function MainBody() {
+export function HomePage() {
   const fakeThreads = [
     {
       id: 1,
-      title: 'Title',
+      title: 'Judul pertama',
       body: 'Lorem, ipsum dolor sit amet consectetur adipisicing elit. Maxime saepe cumque minima ab pariatur iusto ex cum voluptates quisquam, sed molestiae, dignissimos debitis maiores ipsum libero veniam hic perferendis quas non quia odit aperiam dolore inventore? Recusandae velit, obcaecati, eum est quas tenetur unde quo deleniti dolor, nobis sapiente voluptates?',
       likes: 1,
       dislikes: 1,
       comments: 1,
       createdAt: '1 hour ago',
       createdBy: 'David Pinarto',
+      category: 'pertama',
     },
     {
       id: 2,
-      title: 'Title',
+      title: 'Judul kedua',
       body: 'Lorem, ipsum dolor sit amet consectetur adipisicing elit. Maxime saepe cumque minima ab pariatur iusto ex cum voluptates quisquam, sed molestiae, dignissimos debitis maiores ipsum libero veniam hic perferendis quas non quia odit aperiam dolore inventore? Recusandae velit, obcaecati, eum est quas tenetur unde quo deleniti dolor, nobis sapiente voluptates?',
       likes: 1,
       dislikes: 1,
       comments: 1,
       createdAt: '1 hour ago',
       createdBy: 'David Pinarto',
+      category: 'kedua',
     },
     {
       id: 3,
-      title: 'Title',
+      title: 'Judul ketiga',
       body: 'Lorem, ipsum dolor sit amet consectetur adipisicing elit. Maxime saepe cumque minima ab pariatur iusto ex cum voluptates quisquam, sed molestiae, dignissimos debitis maiores ipsum libero veniam hic perferendis quas non quia odit aperiam dolore inventore? Recusandae velit, obcaecati, eum est quas tenetur unde quo deleniti dolor, nobis sapiente voluptates?',
       likes: 1,
       dislikes: 1,
       comments: 1,
       createdAt: '1 hour ago',
       createdBy: 'David Pinarto',
+      category: 'ketiga',
     },
   ];
   return (
-    <div className="main-body">
+    <div className="home-page">
       <h1>Discussion Threads</h1>
-      <ThreadList threads={fakeThreads} />
+      <div className="main-body">
+        <aside>
+          <button id="add-thread" className="btn">+ Add New Thread</button>
+          <CategoryList threads={fakeThreads} />
+        </aside>
+        <ThreadList threads={fakeThreads} />
+      </div>
     </div>
   );
 }
