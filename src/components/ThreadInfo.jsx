@@ -1,19 +1,26 @@
 import React from 'react';
 import { FaRegThumbsUp, FaRegThumbsDown } from 'react-icons/fa';
 import { FaRegCommentDots } from 'react-icons/fa6';
+import { useSelector } from 'react-redux';
 
 export function ThreadInfo({
-  likes, dislikes, comments, createdAt, createdBy,
+  upVotesBy, downVotesBy, comments, createdAt, ownerId,
 }) {
+  const { threadsUsers } = useSelector((states) => states);
+
+  const getThreadUsersUsername = () => {
+    const user = threadsUsers.find((threadUser) => threadUser.id === ownerId);
+    return user ? user.name : null;
+  };
   return (
     <div className="thread-info">
       <div className="likes">
         <FaRegThumbsUp />
-        <p>{likes}</p>
+        <p>{upVotesBy}</p>
       </div>
       <div className="dislikes">
         <FaRegThumbsDown />
-        <p>{dislikes}</p>
+        <p>{downVotesBy}</p>
       </div>
       <div className="comments">
         <FaRegCommentDots />
@@ -23,7 +30,7 @@ export function ThreadInfo({
       <p>
         Created by
         {' '}
-        <strong>{createdBy}</strong>
+        <strong>{getThreadUsersUsername()}</strong>
       </p>
     </div>
   );

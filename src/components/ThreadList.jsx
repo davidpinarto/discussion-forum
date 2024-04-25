@@ -11,7 +11,7 @@ export function ThreadList() {
   const checkRenderThreadsCondition = () => {
     if (filteredThreads) {
       return filteredThreads.map(({
-        id, title, body, likes, dislikes, comments, createdAt, createdBy,
+        id, title, body, upVotesBy, downVotesBy, totalComments, createdAt, ownerId,
       }) => (
         <li key={id}>
           <h2>{title}</h2>
@@ -19,18 +19,18 @@ export function ThreadList() {
             {body}
           </div>
           <ThreadInfo
-            likes={likes}
-            dislikes={dislikes}
-            comments={comments}
+            upVotesBy={upVotesBy.length}
+            downVotesBy={downVotesBy.length}
+            totalComments={totalComments}
             createdAt={createdAt}
-            createdBy={createdBy}
+            ownerId={ownerId}
           />
         </li>
       ));
     }
 
     return threads.map(({
-      id, title, body, likes, dislikes, comments, createdAt, createdBy,
+      id, title, body, upVotesBy, downVotesBy, totalComments, createdAt, ownerId,
     }) => (
       <li key={id}>
         <h2>{title}</h2>
@@ -38,11 +38,11 @@ export function ThreadList() {
           {body}
         </div>
         <ThreadInfo
-          likes={likes}
-          dislikes={dislikes}
-          comments={comments}
+          upVotesBy={upVotesBy.length}
+          downVotesBy={downVotesBy.length}
+          totalComments={totalComments}
           createdAt={createdAt}
-          createdBy={createdBy}
+          ownerId={ownerId}
         />
       </li>
     ));
