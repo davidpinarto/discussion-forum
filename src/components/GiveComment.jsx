@@ -7,6 +7,11 @@ export function GiveComment({ sendComment }) {
   const { authUser } = useSelector((states) => states);
   const [comment, onCommentChangeEventHandler] = useInput('');
 
+  const onSentCommentEventHandler = () => {
+    sendComment(comment);
+    onCommentChangeEventHandler({ target: { value: '' } });
+  };
+
   return (
     <div className="give-comment">
       <h3>Give Comment</h3>
@@ -21,7 +26,11 @@ export function GiveComment({ sendComment }) {
             to give a comment
           </p>
         )}
-      {authUser ? <button className="btn" onClick={() => sendComment(comment)}>Sent comment</button> : ''}
+      {authUser ? (
+        <button className="btn" onClick={onSentCommentEventHandler}>
+          Sent comment
+        </button>
+      ) : ''}
     </div>
   );
 }
