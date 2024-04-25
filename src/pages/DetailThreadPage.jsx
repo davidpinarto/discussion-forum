@@ -26,7 +26,7 @@ export function DetailThreadPage() {
   }
 
   const {
-    title, body, upVotesBy, downVotesBy, createdAt, owner: { name },
+    title, body, upVotesBy, downVotesBy, createdAt, owner: { name, avatar },
   } = detailThread;
 
   const sendComment = async (comment) => {
@@ -44,6 +44,7 @@ export function DetailThreadPage() {
         downVotesBy={downVotesBy}
         createdAt={createdAt}
         ownerName={name}
+        avatar={avatar}
       />
       <GiveComment sendComment={sendComment} />
       <div className="detail-comments">

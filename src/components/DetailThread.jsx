@@ -9,6 +9,7 @@ export function DetailThread({
   downVotesBy,
   createdAt,
   ownerName,
+  avatar,
 }) {
   return (
     <div className="detail-thread">
@@ -26,12 +27,14 @@ export function DetailThread({
           <p>{downVotesBy.length}</p>
         </div>
         <p>{postedAt(createdAt)}</p>
-
-        <p>
-          Created by
-          {' '}
-          <strong>{ownerName}</strong>
-        </p>
+        <div className="users-threads-info">
+          <img src={avatar} alt="avatar" />
+          <p>
+            Created by
+            {' '}
+            <strong>{ownerName}</strong>
+          </p>
+        </div>
       </div>
     </div>
   );

@@ -13,6 +13,10 @@ export function ThreadInfo({
     const user = users.find((userr) => userr.id === ownerId);
     return user ? user.name : null;
   };
+  const getUsersAvatar = () => {
+    const user = users.find((userr) => userr.id === ownerId);
+    return user ? user.avatar : null;
+  };
   return (
     <div className="thread-info">
       <div className="likes">
@@ -28,11 +32,14 @@ export function ThreadInfo({
         <p>{totalComments}</p>
       </div>
       <p>{postedAt(createdAt)}</p>
-      <p>
-        Created by
-        {' '}
-        <strong>{getUsersUsername()}</strong>
-      </p>
+      <div className="users-threads-info">
+        <img src={getUsersAvatar()} alt="avatar" />
+        <p>
+          Created by
+          {' '}
+          <strong>{getUsersUsername()}</strong>
+        </p>
+      </div>
     </div>
   );
 }

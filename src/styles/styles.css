@@ -216,6 +216,11 @@ aside > ul:hover {
   transition: all 0.3s ease;
 }
 
+.users-threads-info > img {
+  width: 1rem;
+  border-radius: 100%;
+}
+
 .likes:hover,
 .dislikes:hover {
   color: var(--border-color-hover);
