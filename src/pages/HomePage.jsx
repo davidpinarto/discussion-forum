@@ -1,10 +1,11 @@
 import React from 'react';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { CategoryList } from '../components/CategoryList';
 import { ThreadList } from '../components/ThreadList';
 import { setThreadsActionCreator } from '../states/threads/action';
 
 export function HomePage() {
+  const { authUser } = useSelector((states) => states);
   const dispatch = useDispatch();
 
   const fakeThreads = [
@@ -52,7 +53,7 @@ export function HomePage() {
       <h1>Discussion Threads</h1>
       <div className="main-body">
         <aside>
-          <button id="add-thread" className="btn">+ Add New Thread</button>
+          {authUser ? <button id="add-thread" className="btn">+ Add New Thread</button> : ''}
           <CategoryList />
         </aside>
         <ThreadList />
