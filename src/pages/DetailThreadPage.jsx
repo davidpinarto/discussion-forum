@@ -1,6 +1,6 @@
 import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { useParams, Link } from 'react-router-dom';
+import { useParams } from 'react-router-dom';
 import { asyncGetDetailThread } from '../states/detailThread/action';
 import { asyncGetAllThreadsUsers } from '../states/threadsUsers/action';
 import { CommentList } from '../components/CommentList';

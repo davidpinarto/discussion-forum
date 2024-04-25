@@ -1,32 +1,15 @@
 import React from 'react';
-import { FaSun, FaMoon } from 'react-icons/fa';
 import { useDispatch, useSelector } from 'react-redux';
-import { useNavigate, useLocation } from 'react-router-dom';
-import { setThemeLightActionCreator, setThemeDarkActionCreator } from '../states/theme/action';
-import { setLanguage } from '../states/language/action';
+import { useNavigate, useLocation, Link } from 'react-router-dom';
 import { asyncUnsetAuthUser } from '../states/authUser/action';
 
 export function Navigation() {
   const {
     authUser = null,
-    themeMode = 'light',
-    language = 'Indonesia',
   } = useSelector((states) => states);
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const location = useLocation();
-
-  const onThemeModeChangeHandler = () => {
-    if (themeMode === 'dark') {
-      dispatch(setThemeLightActionCreator('light'));
-    } else {
-      dispatch(setThemeDarkActionCreator('dark'));
-    }
-  };
-
-  const onLanguageChangeHandler = ({ target }) => {
-    dispatch(setLanguage(target.value));
-  };
 
   const onSignOut = () => {
     dispatch(asyncUnsetAuthUser());
@@ -35,13 +18,7 @@ export function Navigation() {
   return (
     <nav>
       <ul>
-        <li>
-          <select value={language} onChange={onLanguageChangeHandler}>
-            <option value="Indonesia">Indonesia</option>
-            <option value="English">English</option>
-          </select>
-        </li>
-        <li><button id="theme-mode" onClick={onThemeModeChangeHandler}>{themeMode === 'light' ? <FaSun /> : <FaMoon /> }</button></li>
+        <li><Link to="/"><button className="btn">Home</button></Link></li>
         {location.pathname === '/login' || location.pathname === '/register'
           ? ''
           : (
