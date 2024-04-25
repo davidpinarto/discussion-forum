@@ -2,9 +2,10 @@ import React from 'react';
 import { FaRegThumbsUp, FaRegThumbsDown } from 'react-icons/fa';
 import { FaRegCommentDots } from 'react-icons/fa6';
 import { useSelector } from 'react-redux';
+import { postedAt } from '../utils';
 
 export function ThreadInfo({
-  upVotesBy, downVotesBy, comments, createdAt, ownerId,
+  upVotesBy, downVotesBy, totalComments, createdAt, ownerId,
 }) {
   const { threadsUsers } = useSelector((states) => states);
 
@@ -24,9 +25,9 @@ export function ThreadInfo({
       </div>
       <div className="comments">
         <FaRegCommentDots />
-        <p>{comments}</p>
+        <p>{totalComments}</p>
       </div>
-      <p>{createdAt}</p>
+      <p>{postedAt(createdAt)}</p>
       <p>
         Created by
         {' '}
