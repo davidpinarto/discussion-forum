@@ -397,6 +397,12 @@ aside > ul:hover {
   gap: .5rem;
 }
 
+#comment-input {
+  resize: vertical;
+  padding: .5rem;
+  border-radius: .5rem;
+}
+
 footer {
   margin-top: auto;
   text-align: center;

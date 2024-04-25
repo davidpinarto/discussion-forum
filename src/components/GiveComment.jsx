@@ -9,7 +9,7 @@ export function GiveComment() {
     <div className="give-comment">
       <h3>Give Comment</h3>
       {authUser
-        ? <textarea name="comment" id="" cols="30" rows="10" />
+        ? <textarea name="comment" id="comment-input" cols="30" rows="10" />
         : (
           <p>
             You should
