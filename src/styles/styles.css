@@ -338,7 +338,7 @@ aside > ul:hover {
 }
 
 
-.comments {
+.detail-comments {
   display: flex;
   flex-direction: column;
   gap: 2rem;
@@ -355,7 +355,7 @@ aside > ul:hover {
   transition: all 0.3s ease;
 }
 
-.comments:hover {
+.detail-comments:hover {
   border-bottom: 5px solid var(--border-color-hover);
   border-right: 5px solid var(--border-color-hover);
   border-left: 5px solid var(--border-color-hover);

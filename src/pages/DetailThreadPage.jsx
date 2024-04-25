@@ -39,7 +39,7 @@ export function DetailThreadPage() {
         ownerName={name}
       />
       <GiveComment />
-      <div className="comments">
+      <div className="detail-comments">
         <h3>Comments</h3>
         <CommentList />
       </div>
