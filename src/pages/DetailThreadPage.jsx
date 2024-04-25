@@ -6,6 +6,8 @@ import { asyncGetAllThreadsUsers } from '../states/threadsUsers/action';
 import { CommentList } from '../components/CommentList';
 import { DetailThread } from '../components/DetailThread';
 import { GiveComment } from '../components/GiveComment';
+// import { asyncSendComment } from '../states/detailComments/action';
+import api from '../utils/api';
 
 export function DetailThreadPage() {
   const {
@@ -28,6 +30,12 @@ export function DetailThreadPage() {
     title, body, upVotesBy, downVotesBy, createdAt, owner: { name },
   } = detailThread;
 
+  const sendComment = async (comment) => {
+    await api.createComment({ id, content: comment });
+    alert('Add comment successfully!');
+    dispatch(asyncGetDetailThread(id));
+  };
+
   return (
     <div className="detail-page">
       <DetailThread
@@ -38,7 +46,7 @@ export function DetailThreadPage() {
         createdAt={createdAt}
         ownerName={name}
       />
-      <GiveComment />
+      <GiveComment sendComment={sendComment} />
       <div className="detail-comments">
         <h3>Comments</h3>
         <CommentList />

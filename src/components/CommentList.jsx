@@ -7,7 +7,6 @@ export function CommentList() {
   const {
     detailThread,
   } = useSelector((states) => states);
-
   const {
     comments,
   } = detailThread;

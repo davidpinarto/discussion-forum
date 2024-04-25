@@ -1,6 +1,6 @@
 import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { useNavigate, useLocation, Link } from 'react-router-dom';
+import { useLocation, Link } from 'react-router-dom';
 import { asyncUnsetAuthUser } from '../states/authUser/action';
 
 export function Navigation() {
@@ -8,7 +8,6 @@ export function Navigation() {
     authUser = null,
   } = useSelector((states) => states);
   const dispatch = useDispatch();
-  const navigate = useNavigate();
   const location = useLocation();
 
   const onSignOut = () => {
@@ -28,7 +27,7 @@ export function Navigation() {
                 <h3>{authUser ? authUser.name : 'Guest'}</h3>
                 {authUser
                   ? <button onClick={onSignOut}>Logout</button>
-                  : <button onClick={() => navigate('/login')}>Login</button>}
+                  : <button><Link to="/login">Login</Link></button>}
               </div>
             </li>
           )}
