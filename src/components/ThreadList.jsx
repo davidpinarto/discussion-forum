@@ -1,5 +1,6 @@
 import React from 'react';
 import { useSelector } from 'react-redux';
+import { Link } from 'react-router-dom';
 import { ThreadInfo } from './ThreadInfo';
 
 export function ThreadList() {
@@ -14,7 +15,7 @@ export function ThreadList() {
         id, title, body, upVotesBy, downVotesBy, totalComments, createdAt, ownerId,
       }) => (
         <li key={id}>
-          <h2>{title}</h2>
+          <h2><Link to={`/threads/${id}`}>{title}</Link></h2>
           <div className="thread-body">
             {body}
           </div>
@@ -33,7 +34,7 @@ export function ThreadList() {
       id, title, body, upVotesBy, downVotesBy, totalComments, createdAt, ownerId,
     }) => (
       <li key={id}>
-        <h2>{title}</h2>
+        <h2><Link to={`/threads/${id}`}>{title}</Link></h2>
         <div className="thread-body">
           {body}
         </div>

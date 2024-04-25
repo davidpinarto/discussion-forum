@@ -7,6 +7,7 @@ import { languageReducer } from './language/reducer';
 import { threadsReducer } from './threads/reducer';
 import { filteredThreadsReducer } from './filteredThreads/reducer';
 import { threadsUsersReducer } from './threadsUsers/reducer';
+import { detailThreadReducer } from './detailThread/reducer';
 
 export const store = configureStore({
   reducer: {
@@ -17,6 +18,7 @@ export const store = configureStore({
     threads: threadsReducer,
     filteredThreads: filteredThreadsReducer,
     threadsUsers: threadsUsersReducer,
+    detailThread: detailThreadReducer,
     loadingBar: loadingBarReducer,
   },
 });

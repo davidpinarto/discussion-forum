@@ -288,6 +288,115 @@ aside > ul:hover {
   margin-top: 1rem;
 }
 
+/* detail page */
+.detail-page {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.detail-thread {
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+
+  background-color: var(--secondary-background-color);
+  padding: 2rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  border-radius: 0.8rem;
+  border-top: 5px solid var(--border-color);
+  border-left: 5px solid var(--border-color);
+  transition: all 0.3s ease;
+}
+
+.detail-thread:hover {
+  border-top: 5px solid var(--border-color-hover);
+  border-left: 5px solid var(--border-color-hover);
+}
+
+.give-comment {
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+
+  background-color: var(--secondary-background-color);
+  padding: 2rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  border-radius: 0.8rem;
+  border-bottom: 5px solid var(--border-color);
+  border-right: 5px solid var(--border-color);
+  transition: all 0.3s ease;
+}
+
+.give-comment:hover {
+  border-bottom: 5px solid var(--border-color-hover);
+  border-right: 5px solid var(--border-color-hover);
+}
+
+
+.comments {
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+
+  background-color: var(--secondary-background-color);
+  padding: 2rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  border-radius: 0.8rem;
+  border-bottom: 5px solid var(--border-color);
+  border-right: 5px solid var(--border-color);
+  border-left: 5px solid var(--border-color);
+  transition: all 0.3s ease;
+}
+
+.comments:hover {
+  border-bottom: 5px solid var(--border-color-hover);
+  border-right: 5px solid var(--border-color-hover);
+  border-left: 5px solid var(--border-color-hover);
+}
+
+.comment-list {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.comment-list > li {
+  display: flex;
+  flex-direction: column;
+  gap: .5rem;
+  border-bottom: 1px solid var(--border-color);
+  padding-bottom: .5rem;
+}
+
+.comment-profile-info {
+  display: flex;
+  align-items: center;
+  gap: .5rem;
+}
+
+.comment-profile-info > img {
+  width: 2rem;
+  border-radius: 100%;
+}
+
+.comment-info {
+  display: flex;
+  gap: 1rem;
+}
+
+.comment-info > div {
+  display: flex;
+  align-items: center;
+  gap: .5rem;
+}
+
 footer {
   margin-top: auto;
   text-align: center;
