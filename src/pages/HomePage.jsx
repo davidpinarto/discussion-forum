@@ -4,7 +4,7 @@ import { Link } from 'react-router-dom';
 import { CategoryList } from '../components/CategoryList';
 import { ThreadList } from '../components/ThreadList';
 import { asyncGetAllThreads } from '../states/threads/action';
-import { asyncGetAllThreadsUsers } from '../states/threadsUsers/action';
+import { asyncGetAllUsers } from '../states/users/action';
 
 export function HomePage() {
   const { authUser } = useSelector((states) => states);
@@ -12,7 +12,7 @@ export function HomePage() {
 
   React.useEffect(() => {
     dispatch(asyncGetAllThreads());
-    dispatch(asyncGetAllThreadsUsers());
+    dispatch(asyncGetAllUsers());
   }, [dispatch]);
 
   return (

@@ -7,10 +7,10 @@ import { postedAt } from '../utils';
 export function ThreadInfo({
   upVotesBy, downVotesBy, totalComments, createdAt, ownerId,
 }) {
-  const { threadsUsers } = useSelector((states) => states);
+  const { users } = useSelector((states) => states);
 
-  const getThreadUsersUsername = () => {
-    const user = threadsUsers.find((threadUser) => threadUser.id === ownerId);
+  const getUsersUsername = () => {
+    const user = users.find((userr) => userr.id === ownerId);
     return user ? user.name : null;
   };
   return (
@@ -31,7 +31,7 @@ export function ThreadInfo({
       <p>
         Created by
         {' '}
-        <strong>{getThreadUsersUsername()}</strong>
+        <strong>{getUsersUsername()}</strong>
       </p>
     </div>
   );

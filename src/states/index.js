@@ -4,8 +4,8 @@ import { authUserReducer } from './authUser/reducer';
 import { isPreloadReducer } from './isPreload/reducer';
 import { threadsReducer } from './threads/reducer';
 import { filteredThreadsReducer } from './filteredThreads/reducer';
-import { threadsUsersReducer } from './threadsUsers/reducer';
 import { detailThreadReducer } from './detailThread/reducer';
+import { usersReducer } from './users/reducer';
 
 export const store = configureStore({
   reducer: {
@@ -13,8 +13,8 @@ export const store = configureStore({
     isPreload: isPreloadReducer,
     threads: threadsReducer,
     filteredThreads: filteredThreadsReducer,
-    threadsUsers: threadsUsersReducer,
     detailThread: detailThreadReducer,
+    users: usersReducer,
     loadingBar: loadingBarReducer,
   },
 });

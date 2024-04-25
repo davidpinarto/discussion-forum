@@ -2,7 +2,7 @@ import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useParams } from 'react-router-dom';
 import { asyncGetDetailThread } from '../states/detailThread/action';
-import { asyncGetAllThreadsUsers } from '../states/threadsUsers/action';
+import { asyncGetAllUsers } from '../states/users/action';
 import { CommentList } from '../components/CommentList';
 import { DetailThread } from '../components/DetailThread';
 import { GiveComment } from '../components/GiveComment';
@@ -18,7 +18,7 @@ export function DetailThreadPage() {
 
   React.useEffect(() => {
     dispatch(asyncGetDetailThread(id));
-    dispatch(asyncGetAllThreadsUsers());
+    dispatch(asyncGetAllUsers());
   }, [dispatch]);
 
   if (detailThread === null) {
