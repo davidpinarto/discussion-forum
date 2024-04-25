@@ -1,12 +1,11 @@
 import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useParams } from 'react-router-dom';
-import { asyncGetDetailThread } from '../states/detailThread/action';
+import { asyncGetDetailThread, asyncAddNewCommentOnThread } from '../states/detailThread/action';
 import { asyncGetAllUsers } from '../states/users/action';
 import { CommentList } from '../components/CommentList';
 import { DetailThread } from '../components/DetailThread';
 import { GiveComment } from '../components/GiveComment';
-import api from '../utils/api';
 
 export function DetailThreadPage() {
   const {
@@ -30,9 +29,7 @@ export function DetailThreadPage() {
   } = detailThread;
 
   const sendComment = async (comment) => {
-    await api.createComment({ id, content: comment });
-    alert('Add comment successfully!');
-    dispatch(asyncGetDetailThread(id));
+    dispatch(asyncAddNewCommentOnThread({ id, content: comment }));
   };
 
   return (

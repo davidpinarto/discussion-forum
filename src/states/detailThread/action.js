@@ -28,3 +28,20 @@ export function asyncGetDetailThread(id) {
     dispatch(hideLoading());
   };
 }
+
+export function asyncAddNewCommentOnThread({ id, content }) {
+  return async (dispatch) => {
+    dispatch(showLoading());
+
+    try {
+      await api.createComment({ id, content });
+      alert('Add new comment success!');
+      const detailThread = await api.getDetailThread({ id });
+      dispatch(setDetailThreadActionCreator(detailThread));
+    } catch (error) {
+      alert(error.message);
+    }
+
+    dispatch(hideLoading());
+  };
+}
