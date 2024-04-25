@@ -13,30 +13,32 @@ export function CommentList() {
 
   return (
     <ul className="comment-list">
-      {comments.map(({
-        id, content, createdAt, owner: { name, avatar }, upVotesBy, downVotesBy,
-      }) => (
-        <li key={id}>
-          <div className="comment-profile-info">
-            <img src={avatar} alt="avatar" />
-            <h4>{name}</h4>
-          </div>
-          <p className="comment-content">
-            {content}
-          </p>
-          <div className="comment-info">
-            <div className="likes">
-              <FaRegThumbsUp />
-              <p>{upVotesBy.length}</p>
+      {comments.length
+        ? comments.map(({
+          id, content, createdAt, owner: { name, avatar }, upVotesBy, downVotesBy,
+        }) => (
+          <li key={id}>
+            <div className="comment-profile-info">
+              <img src={avatar} alt="avatar" />
+              <h4>{name}</h4>
             </div>
-            <div className="dislikes">
-              <FaRegThumbsDown />
-              <p>{downVotesBy.length}</p>
+            <p className="comment-content">
+              {content}
+            </p>
+            <div className="comment-info">
+              <div className="likes">
+                <FaRegThumbsUp />
+                <p>{upVotesBy.length}</p>
+              </div>
+              <div className="dislikes">
+                <FaRegThumbsDown />
+                <p>{downVotesBy.length}</p>
+              </div>
+              <p>{postedAt(createdAt)}</p>
             </div>
-            <p>{postedAt(createdAt)}</p>
-          </div>
-        </li>
-      ))}
+          </li>
+        ))
+        : <h4>There&apos;s no comment here</h4>}
     </ul>
   );
 }

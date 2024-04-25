@@ -17,7 +17,9 @@ export function ThreadList() {
         <li key={id}>
           <h2><Link to={`/threads/${id}`}>{title}</Link></h2>
           <div className="thread-body">
-            {body}
+            {body.length > 200
+              ? `${body.substring(0, 200)}...`
+              : body}
           </div>
           <ThreadInfo
             upVotesBy={upVotesBy.length}
@@ -36,7 +38,9 @@ export function ThreadList() {
       <li key={id}>
         <h2><Link to={`/threads/${id}`}>{title}</Link></h2>
         <div className="thread-body">
-          {body}
+          {body.length > 200
+            ? `${body.substring(0, 200)}...`
+            : body}
         </div>
         <ThreadInfo
           upVotesBy={upVotesBy.length}
