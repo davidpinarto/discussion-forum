@@ -16,7 +16,7 @@ export function CategoryList() {
     dispatch(setFilteredThreadsActionCreator(filteredThreads));
   };
 
-  const handleClick = (category) => {
+  const filterAndUnfilterConditionHandler = (category) => {
     if (selectedCategory !== category) {
       onCategoryFilterHandler(category);
       setSelectedCategory(category);
@@ -33,7 +33,7 @@ export function CategoryList() {
           <li key={id}>
             <button
               className={`category-item ${selectedCategory === category ? 'selected' : ''}`}
-              onClick={() => handleClick(category)}
+              onClick={() => filterAndUnfilterConditionHandler(category)}
             >
               {category}
             </button>
