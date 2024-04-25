@@ -6,7 +6,6 @@ import { asyncGetAllThreadsUsers } from '../states/threadsUsers/action';
 import { CommentList } from '../components/CommentList';
 import { DetailThread } from '../components/DetailThread';
 import { GiveComment } from '../components/GiveComment';
-// import { asyncSendComment } from '../states/detailComments/action';
 import api from '../utils/api';
 
 export function DetailThreadPage() {

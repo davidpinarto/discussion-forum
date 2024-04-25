@@ -4,6 +4,7 @@ import { LoginPage } from '../pages/LoginPage';
 import { RegisterPage } from '../pages/RegisterPage';
 import { HomePage } from '../pages/HomePage';
 import { DetailThreadPage } from '../pages/DetailThreadPage';
+import { AddThreadPage } from '../pages/AddThreadPage';
 
 export function Main() {
   return (
@@ -13,6 +14,7 @@ export function Main() {
         <Route path="/login" element={<LoginPage />} />
         <Route path="/register" element={<RegisterPage />} />
         <Route path="/threads/:id" element={<DetailThreadPage />} />
+        <Route path="/add-thread" element={<AddThreadPage />} />
       </Routes>
     </main>
   );

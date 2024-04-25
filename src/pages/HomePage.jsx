@@ -1,5 +1,6 @@
 import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
+import { Link } from 'react-router-dom';
 import { CategoryList } from '../components/CategoryList';
 import { ThreadList } from '../components/ThreadList';
 import { asyncGetAllThreads } from '../states/threads/action';
@@ -19,7 +20,11 @@ export function HomePage() {
       <h1>Discussion Threads</h1>
       <div className="main-body">
         <aside>
-          {authUser ? <button id="add-thread" className="btn">+ Add New Thread</button> : ''}
+          {authUser ? (
+            <button id="add-thread" className="btn">
+              <Link to="/add-thread">+ Add New Thread</Link>
+            </button>
+          ) : ''}
           <CategoryList />
         </aside>
         <ThreadList />
