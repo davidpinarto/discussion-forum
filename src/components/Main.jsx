@@ -6,6 +6,7 @@ import { HomePage } from '../pages/HomePage';
 import { DetailThreadPage } from '../pages/DetailThreadPage';
 import { AddThreadPage } from '../pages/AddThreadPage';
 import { LeaderboardsPage } from '../pages/LeaderboardsPage';
+import { NotFoundPage } from '../pages/NotFoundPage';
 
 export function Main() {
   return (
@@ -17,6 +18,7 @@ export function Main() {
         <Route path="/threads/:id" element={<DetailThreadPage />} />
         <Route path="/add-thread" element={<AddThreadPage />} />
         <Route path="/leaderboards" element={<LeaderboardsPage />} />
+        <Route path="/*" element={<NotFoundPage />} />
       </Routes>
     </main>
   );

@@ -514,3 +514,7 @@ footer {
   background-color: var(--secondary-background-color);
   border-top: 5px solid var(--border-color);
 }
+
+#not-found-page {
+  text-align: center;
+}
