@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { FaRegThumbsUp, FaRegThumbsDown } from 'react-icons/fa';
 import { postedAt } from '../utils';
@@ -6,7 +6,7 @@ import { asyncUpVoteDetailThreadComment, asyncDownVoteDetailThreadComment } from
 
 export function CommentList() {
   const {
-    detailThread,
+    detailThread, authUser,
   } = useSelector((states) => states);
 
   const dispatch = useDispatch();
@@ -14,6 +14,43 @@ export function CommentList() {
   const {
     id: threadId, comments,
   } = detailThread;
+
+  const [commentVotes, setCommentVotes] = useState({});
+
+  useEffect(() => {
+    /** buat object untuk menampung data comment */
+    const initialCommentVotes = {};
+    /** iterasi semua comment untuk mendapatkan data apakah sudah di up atau down vote */
+    comments.forEach((comment) => {
+      const { id, upVotesBy, downVotesBy } = comment;
+      /**
+       * simpan nilai pada object apakah sudah up vote atau down vote
+       * dengan nilai keynya adalah dari id comment yang unik
+       */
+      initialCommentVotes[id] = {
+        alreadyUpvoted: upVotesBy.includes(authUser.id),
+        alreadyDownVoted: downVotesBy.includes(authUser.id),
+      };
+    });
+    /** inisiasikan nilainya untuk render pertama */
+    setCommentVotes(initialCommentVotes);
+  }, [comments, authUser]);
+
+  const handleUpVote = (commentId) => {
+    dispatch(asyncUpVoteDetailThreadComment({ threadId, commentId }));
+    setCommentVotes((prevVotes) => ({
+      ...prevVotes,
+      [commentId]: { ...prevVotes[commentId], alreadyUpvoted: true },
+    }));
+  };
+
+  const handleDownVote = (commentId) => {
+    dispatch(asyncDownVoteDetailThreadComment({ threadId, commentId }));
+    setCommentVotes((prevVotes) => ({
+      ...prevVotes,
+      [commentId]: { ...prevVotes[commentId], alreadyDownVoted: true },
+    }));
+  };
 
   return (
     <ul className="comment-list">
@@ -30,12 +67,12 @@ export function CommentList() {
               {content}
             </p>
             <div className="comment-info">
-              <button className="likes" onClick={() => dispatch(asyncUpVoteDetailThreadComment({ threadId, commentId: id }))}>
+              <button className={`likes ${commentVotes[id]?.alreadyUpvoted ? 'liked' : ''}`} onClick={() => handleUpVote(id)}>
                 <FaRegThumbsUp />
                 {' '}
                 {upVotesBy.length}
               </button>
-              <button className="dislikes" onClick={() => dispatch(asyncDownVoteDetailThreadComment({ threadId, commentId: id }))}>
+              <button className={`dislikes ${commentVotes[id]?.alreadyDownVoted ? 'disliked' : ''}`} onClick={() => handleDownVote(id)}>
                 <FaRegThumbsDown />
                 {' '}
                 {downVotesBy.length}
