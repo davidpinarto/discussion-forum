@@ -35,6 +35,7 @@ export function DetailThreadPage() {
   return (
     <div className="detail-page">
       <DetailThread
+        threadId={id}
         title={title}
         body={body}
         upVotesBy={upVotesBy}

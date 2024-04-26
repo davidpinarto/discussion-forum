@@ -1,8 +1,11 @@
 import React from 'react';
 import { FaRegThumbsUp, FaRegThumbsDown } from 'react-icons/fa';
+import { useDispatch } from 'react-redux';
 import { postedAt } from '../utils';
+import { asyncUpVoteThread, asyncDownVoteThread } from '../states/threads/action';
 
 export function DetailThread({
+  threadId,
   title,
   body,
   upVotesBy,
@@ -11,6 +14,8 @@ export function DetailThread({
   ownerName,
   avatar,
 }) {
+  const dispatch = useDispatch();
+
   return (
     <div className="detail-thread">
       <h2>{title}</h2>
@@ -18,14 +23,16 @@ export function DetailThread({
         {body}
       </div>
       <div className="thread-info">
-        <div className="likes">
+        <button className="likes" onClick={() => dispatch(asyncUpVoteThread(threadId))}>
           <FaRegThumbsUp />
-          <p>{upVotesBy.length}</p>
-        </div>
-        <div className="dislikes">
+          {' '}
+          {upVotesBy.length}
+        </button>
+        <button className="dislikes" onClick={() => dispatch(asyncDownVoteThread(threadId))}>
           <FaRegThumbsDown />
-          <p>{downVotesBy.length}</p>
-        </div>
+          {' '}
+          {downVotesBy.length}
+        </button>
         <p>{postedAt(createdAt)}</p>
         <div className="users-threads-info">
           <img src={avatar} alt="avatar" />
