@@ -23,7 +23,7 @@ export function Navigation() {
           ? ''
           : (
             <li className="profile-info">
-              <img src={`https://ui-avatars.com/api/?name=${authUser ? authUser.name : 'Guest'}&background=80CBDC`} alt="avatar" />
+              <img src={authUser ? authUser.avatar : 'https://ui-avatars.com/api/?name=Guest&background=80CBDC'} alt="avatar" />
               <div>
                 <h3>{authUser ? authUser.name : 'Guest'}</h3>
                 {authUser
