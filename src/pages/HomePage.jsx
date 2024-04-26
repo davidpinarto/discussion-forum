@@ -16,16 +16,13 @@ export function HomePage() {
   }, [dispatch]);
 
   const [selectedCategory, setSelectedCategory] = React.useState(null);
-  const [countClick, setCountClick] = React.useState(0);
 
   const onCategoryFilterHandler = (category) => {
-    if (countClick) {
+    if (selectedCategory === category) {
       setSelectedCategory(null);
-      setCountClick(0);
-      return;
+    } else {
+      setSelectedCategory(category);
     }
-    setSelectedCategory(category);
-    setCountClick((prevCount) => prevCount + 1);
   };
 
   if (selectedCategory) {
