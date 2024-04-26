@@ -227,6 +227,10 @@ aside > ul:hover {
   cursor: pointer;
 }
 
+.liked,.disliked {
+  color: var(--border-color-hover);
+}
+
 /* login page */
 .login-container {
   display: flex;

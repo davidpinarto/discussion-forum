@@ -1,6 +1,6 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { FaRegThumbsUp, FaRegThumbsDown } from 'react-icons/fa';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { postedAt } from '../utils';
 import { asyncUpVoteDetailThread, asyncDownVoteDetailThread } from '../states/detailThread/action';
 
@@ -14,7 +14,18 @@ export function DetailThread({
   ownerName,
   avatar,
 }) {
+  const { authUser } = useSelector((states) => states);
   const dispatch = useDispatch();
+
+  const [alreadyUpvoted, setAlreadyUpvoted] = useState(false);
+  const [alreadyDownVoted, setAlreadyDownVoted] = useState(false);
+
+  useEffect(() => {
+    if (authUser) {
+      setAlreadyUpvoted(upVotesBy.includes(authUser.id));
+      setAlreadyDownVoted(downVotesBy.includes(authUser.id));
+    }
+  }, [upVotesBy, downVotesBy, authUser]);
 
   return (
     <div className="detail-thread">
@@ -23,12 +34,12 @@ export function DetailThread({
         {body}
       </div>
       <div className="thread-info">
-        <button className="likes" onClick={() => dispatch(asyncUpVoteDetailThread(threadId))}>
+        <button className={`likes ${alreadyUpvoted ? 'liked' : ''}`} onClick={() => dispatch(asyncUpVoteDetailThread(threadId))}>
           <FaRegThumbsUp />
           {' '}
           {upVotesBy.length}
         </button>
-        <button className="dislikes" onClick={() => dispatch(asyncDownVoteDetailThread(threadId))}>
+        <button className={`dislikes ${alreadyDownVoted ? 'disliked' : ''}`} onClick={() => dispatch(asyncDownVoteDetailThread(threadId))}>
           <FaRegThumbsDown />
           {' '}
           {downVotesBy.length}
