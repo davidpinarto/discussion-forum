@@ -18,6 +18,7 @@ export function Navigation() {
     <nav>
       <ul>
         <li><Link to="/"><button className="btn">Home</button></Link></li>
+        <li><Link to="/leaderboards"><button className="btn">Leaderboards</button></Link></li>
         {location.pathname === '/login' || location.pathname === '/register'
           ? ''
           : (
