@@ -103,8 +103,13 @@ export function asyncUpVoteDetailThread(threadId) {
     }
 
     let alreadyUpvoted = false;
+    let alreadyDownVoted = false;
+
     if (detailThread.upVotesBy.includes(authUser.id)) {
       alreadyUpvoted = true;
+    }
+    if (detailThread.downVotesBy.includes(authUser.id)) {
+      alreadyDownVoted = true;
     }
 
     if (alreadyUpvoted) {
@@ -119,6 +124,10 @@ export function asyncUpVoteDetailThread(threadId) {
 
       dispatch(hideLoading());
     } else {
+      if (alreadyDownVoted) {
+        dispatch(neutralizeDetailThreadDownVoteActionCreator({ threadId, userId: authUser.id }));
+      }
+
       dispatch(toggleUpVoteDetailThreadActionCreator({ threadId, userId: authUser.id }));
 
       try {
@@ -146,8 +155,13 @@ export function asyncDownVoteDetailThread(threadId) {
     }
 
     let alreadyDownvoted = false;
+    let alreadyUpvoted = false;
+
     if (detailThread.downVotesBy.includes(authUser.id)) {
       alreadyDownvoted = true;
+    }
+    if (detailThread.upVotesBy.includes(authUser.id)) {
+      alreadyUpvoted = true;
     }
 
     if (alreadyDownvoted) {
@@ -162,6 +176,10 @@ export function asyncDownVoteDetailThread(threadId) {
 
       dispatch(hideLoading());
     } else {
+      if (alreadyUpvoted) {
+        dispatch(neutralizeDetailThreadUpVoteActionCreator({ threadId, userId: authUser.id }));
+      }
+
       dispatch(toggleDownVoteDetailThreadActionCreator({ threadId, userId: authUser.id }));
 
       try {

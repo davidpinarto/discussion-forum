@@ -114,8 +114,13 @@ export function asyncUpVoteThread(threadId) {
     const filterThread = threads.filter((thread) => thread.id === threadId);
 
     let alreadyUpvoted = false;
+    let alreadyDownVoted = false;
+
     if (filterThread[0].upVotesBy.includes(authUser.id)) {
       alreadyUpvoted = true;
+    }
+    if (filterThread[0].downVotesBy.includes(authUser.id)) {
+      alreadyDownVoted = true;
     }
 
     if (alreadyUpvoted) {
@@ -130,6 +135,10 @@ export function asyncUpVoteThread(threadId) {
 
       dispatch(hideLoading());
     } else {
+      if (alreadyDownVoted) {
+        dispatch(neutralizeThreadDownVoteActionCreator({ threadId, userId: authUser.id }));
+      }
+
       dispatch(toggleUpVoteThreadActionCreator({ threadId, userId: authUser.id }));
 
       try {
@@ -159,8 +168,13 @@ export function asyncDownVoteThread(threadId) {
     const filterThread = threads.filter((thread) => thread.id === threadId);
 
     let alreadyDownvoted = false;
+    let alreadyUpvoted = false;
+
     if (filterThread[0].downVotesBy.includes(authUser.id)) {
       alreadyDownvoted = true;
+    }
+    if (filterThread[0].upVotesBy.includes(authUser.id)) {
+      alreadyUpvoted = true;
     }
 
     if (alreadyDownvoted) {
@@ -175,6 +189,10 @@ export function asyncDownVoteThread(threadId) {
 
       dispatch(hideLoading());
     } else {
+      if (alreadyUpvoted) {
+        dispatch(neutralizeThreadUpVoteActionCreator({ threadId, userId: authUser.id }));
+      }
+
       dispatch(toggleDownVoteThreadActionCreator({ threadId, userId: authUser.id }));
 
       try {
