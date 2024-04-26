@@ -1,13 +1,16 @@
 import React from 'react';
 import { FaRegThumbsUp, FaRegThumbsDown } from 'react-icons/fa';
 import { FaRegCommentDots } from 'react-icons/fa6';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { postedAt } from '../utils';
+import { asyncDownVoteThread, asyncUpVoteThread } from '../states/threads/action';
 
 export function ThreadInfo({
-  upVotesBy, downVotesBy, totalComments, createdAt, ownerId,
+  upVotesBy, downVotesBy, totalComments, createdAt, ownerId, threadId,
 }) {
   const { users } = useSelector((states) => states);
+
+  const dispatch = useDispatch();
 
   const getUsersUsername = () => {
     const user = users.find((userr) => userr.id === ownerId);
@@ -19,14 +22,16 @@ export function ThreadInfo({
   };
   return (
     <div className="thread-info">
-      <div className="likes">
+      <button className="likes" onClick={() => dispatch(asyncUpVoteThread(threadId))}>
         <FaRegThumbsUp />
-        <p>{upVotesBy}</p>
-      </div>
-      <div className="dislikes">
+        {' '}
+        {upVotesBy}
+      </button>
+      <button className="dislikes" onClick={() => dispatch(asyncDownVoteThread(threadId))}>
         <FaRegThumbsDown />
-        <p>{downVotesBy}</p>
-      </div>
+        {' '}
+        {downVotesBy}
+      </button>
       <div className="comments">
         <FaRegCommentDots />
         <p>{totalComments}</p>

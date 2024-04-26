@@ -22,6 +22,7 @@ export function ThreadList() {
               : body}
           </div>
           <ThreadInfo
+            threadId={id}
             upVotesBy={upVotesBy.length}
             downVotesBy={downVotesBy.length}
             totalComments={totalComments}
@@ -43,6 +44,7 @@ export function ThreadList() {
             : body}
         </div>
         <ThreadInfo
+          threadId={id}
           upVotesBy={upVotesBy.length}
           downVotesBy={downVotesBy.length}
           totalComments={totalComments}
