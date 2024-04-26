@@ -7,13 +7,50 @@ import { asyncGetAllThreads } from '../states/threads/action';
 import { asyncGetAllUsers } from '../states/users/action';
 
 export function HomePage() {
-  const { authUser } = useSelector((states) => states);
+  const { authUser, threads } = useSelector((states) => states);
   const dispatch = useDispatch();
 
   React.useEffect(() => {
     dispatch(asyncGetAllThreads());
     dispatch(asyncGetAllUsers());
   }, [dispatch]);
+
+  const [selectedCategory, setSelectedCategory] = React.useState(null);
+  const [countClick, setCountClick] = React.useState(0);
+
+  const onCategoryFilterHandler = (category) => {
+    if (countClick) {
+      setSelectedCategory(null);
+      setCountClick(0);
+      return;
+    }
+    setSelectedCategory(category);
+    setCountClick((prevCount) => prevCount + 1);
+  };
+
+  if (selectedCategory) {
+    const filteredThreads = threads
+      .filter((thread) => thread.category.toLowerCase() === selectedCategory.toLowerCase());
+    return (
+      <div className="home-page">
+        <h1>Discussion Threads</h1>
+        <div className="main-body">
+          <aside>
+            {authUser ? (
+              <button id="add-thread" className="btn">
+                <Link to="/add-thread">+ Add New Thread</Link>
+              </button>
+            ) : ''}
+            <CategoryList
+              selectedCategory={selectedCategory}
+              onThreadFilter={onCategoryFilterHandler}
+            />
+          </aside>
+          <ThreadList filteredThreads={filteredThreads} />
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="home-page">
@@ -25,7 +62,10 @@ export function HomePage() {
               <Link to="/add-thread">+ Add New Thread</Link>
             </button>
           ) : ''}
-          <CategoryList />
+          <CategoryList
+            selectedCategory={selectedCategory}
+            onThreadFilter={onCategoryFilterHandler}
+          />
         </aside>
         <ThreadList />
       </div>

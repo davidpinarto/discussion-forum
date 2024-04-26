@@ -1,30 +1,10 @@
 import React from 'react';
-import { useSelector, useDispatch } from 'react-redux';
-import { setFilteredThreadsActionCreator, unsetFilteredThreadsActionCreator } from '../states/filteredThreads/action';
+import { useSelector } from 'react-redux';
 
-export function CategoryList() {
+export function CategoryList({ selectedCategory, onThreadFilter }) {
   const {
     threads,
   } = useSelector((states) => states);
-  const dispatch = useDispatch();
-
-  const [selectedCategory, setSelectedCategory] = React.useState(null);
-
-  const onCategoryFilterHandler = (category) => {
-    const filteredThreads = threads
-      .filter((thread) => thread.category.toLowerCase() === category.toLowerCase());
-    dispatch(setFilteredThreadsActionCreator(filteredThreads));
-  };
-
-  const filterAndUnfilterConditionHandler = (category) => {
-    if (selectedCategory !== category) {
-      onCategoryFilterHandler(category);
-      setSelectedCategory(category);
-    } else {
-      dispatch(unsetFilteredThreadsActionCreator());
-      setSelectedCategory(null);
-    }
-  };
 
   return (
     <ul className="category-list">
@@ -33,7 +13,7 @@ export function CategoryList() {
           <li key={id}>
             <button
               className={`category-item ${selectedCategory === category ? 'selected' : ''}`}
-              onClick={() => filterAndUnfilterConditionHandler(category)}
+              onClick={() => onThreadFilter(category)}
             >
               {category}
             </button>
