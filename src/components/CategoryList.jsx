@@ -6,11 +6,13 @@ export function CategoryList({ selectedCategory, onThreadFilter }) {
     threads,
   } = useSelector((states) => states);
 
+  const uniqueCategories = [...new Set(threads.map((thread) => thread.category))];
+
   return (
     <ul className="category-list">
-      {threads.length
-        ? threads.map(({ id, category }) => (
-          <li key={id}>
+      {uniqueCategories.length
+        ? uniqueCategories.map((category) => (
+          <li key={category}>
             <button
               className={`category-item ${selectedCategory === category ? 'selected' : ''}`}
               onClick={() => onThreadFilter(category)}
