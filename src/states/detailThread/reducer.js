@@ -10,13 +10,10 @@ export function detailThreadReducer(detailThread = null, action = {}) {
         upVotesBy: detailThread.upVotesBy.concat([action.payload.userId]),
       };
     case ActionType.TOGGLE_DOWN_VOTE_DETAIL_THREAD:
-      if (detailThread.id === action.payload.threadId) {
-        return {
-          ...detailThread,
-          downVotesBy: detailThread.downVotesBy.concat([action.payload.userId]),
-        };
-      }
-      break;
+      return {
+        ...detailThread,
+        downVotesBy: detailThread.downVotesBy.concat([action.payload.userId]),
+      };
     case ActionType.NEUTRALIZE_DETAIL_THREAD_UPVOTE:
       const { upVotesBy } = detailThread;
       const updatedUpVotesBy = upVotesBy.filter(
@@ -35,6 +32,70 @@ export function detailThreadReducer(detailThread = null, action = {}) {
         ...detailThread,
         downVotesBy: updatedDownVotesBy,
       };
+    case ActionType.TOGGLE_UP_VOTE_DETAIL_THREAD_COMMENT: {
+      const { commentId, userId } = action.payload;
+      const updatedComments = detailThread.comments.map((comment) => {
+        if (comment.id === commentId) {
+          return {
+            ...comment,
+            upVotesBy: comment.upVotesBy.concat(userId),
+          };
+        }
+        return comment;
+      });
+      return {
+        ...detailThread,
+        comments: updatedComments,
+      };
+    }
+    case ActionType.TOGGLE_DOWN_VOTE_DETAIL_THREAD_COMMENT: {
+      const { commentId, userId } = action.payload;
+      const updatedComments = detailThread.comments.map((comment) => {
+        if (comment.id === commentId) {
+          return {
+            ...comment,
+            downVotesBy: comment.downVotesBy.concat(userId),
+          };
+        }
+        return comment;
+      });
+      return {
+        ...detailThread,
+        comments: updatedComments,
+      };
+    }
+    case ActionType.NEUTRALIZE_DETAIL_THREAD_COMMENT_UPVOTE: {
+      const { commentId, userId: userIdFromPayload } = action.payload;
+      const updatedComments = detailThread.comments.map((comment) => {
+        if (comment.id === commentId) {
+          return {
+            ...comment,
+            upVotesBy: comment.upVotesBy.filter((userId) => userId !== userIdFromPayload),
+          };
+        }
+        return comment;
+      });
+      return {
+        ...detailThread,
+        comments: updatedComments,
+      };
+    }
+    case ActionType.NEUTRALIZE_DETAIL_THREAD_COMMENT_DOWN_VOTE_COMMENT: {
+      const { commentId, userId: userIdFromPayload } = action.payload;
+      const updatedComments = detailThread.comments.map((comment) => {
+        if (comment.id === commentId) {
+          return {
+            ...comment,
+            downVotesBy: comment.downVotesBy.filter((userId) => userId !== userIdFromPayload),
+          };
+        }
+        return comment;
+      });
+      return {
+        ...detailThread,
+        comments: updatedComments,
+      };
+    }
     default:
       return detailThread;
   }

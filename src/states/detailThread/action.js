@@ -7,6 +7,10 @@ export const ActionType = {
   TOGGLE_DOWN_VOTE_DETAIL_THREAD: 'TOGGLE_DOWN_VOTE_DETAIL_THREAD',
   NEUTRALIZE_DETAIL_THREAD_UPVOTE: 'NEUTRALIZE_DETAIL_THREAD_UPVOTE',
   NEUTRALIZE_DETAIL_THREAD_DOWN_VOTE: 'NEUTRALIZE_DETAIL_THREAD_DOWN_VOTE',
+  TOGGLE_UP_VOTE_DETAIL_THREAD_COMMENT: 'TOGGLE_UP_VOTE_DETAIL_THREAD_COMMENT',
+  TOGGLE_DOWN_VOTE_DETAIL_THREAD_COMMENT: 'TOGGLE_DOWN_VOTE_DETAIL_THREAD_COMMENT',
+  NEUTRALIZE_DETAIL_THREAD_COMMENT_UPVOTE: 'NEUTRALIZE_DETAIL_THREAD_COMMENT_UPVOTE',
+  NEUTRALIZE_DETAIL_THREAD_COMMENT_DOWN_VOTE_COMMENT: 'NEUTRALIZE_DETAIL_THREAD_COMMENT_DOWN_VOTE_COMMENT',
 };
 
 export function setDetailThreadActionCreator(detailThread) {
@@ -18,42 +22,80 @@ export function setDetailThreadActionCreator(detailThread) {
   };
 }
 
-export function toggleUpVoteDetailThreadActionCreator({ threadId, userId }) {
+export function toggleUpVoteDetailThreadActionCreator({ userId }) {
   return {
     type: ActionType.TOGGLE_UP_VOTE_DETAIL_THREAD,
     payload: {
-      threadId,
       userId,
     },
   };
 }
 
-export function toggleDownVoteDetailThreadActionCreator({ threadId, userId }) {
+export function toggleDownVoteDetailThreadActionCreator({ userId }) {
   return {
     type: ActionType.TOGGLE_DOWN_VOTE_DETAIL_THREAD,
     payload: {
-      threadId,
       userId,
     },
   };
 }
 
-export function neutralizeDetailThreadUpVoteActionCreator({ threadId, userId }) {
+export function neutralizeDetailThreadUpVoteActionCreator({ userId }) {
   return {
     type: ActionType.NEUTRALIZE_DETAIL_THREAD_UPVOTE,
     payload: {
-      threadId,
       userId,
     },
   };
 }
 
-export function neutralizeDetailThreadDownVoteActionCreator({ threadId, userId }) {
+export function neutralizeDetailThreadDownVoteActionCreator({ userId }) {
   return {
     type: ActionType.NEUTRALIZE_DETAIL_THREAD_DOWN_VOTE,
     payload: {
-      threadId,
       userId,
+    },
+  };
+}
+
+export function toggleUpVoteDetailThreadCommentActionCreator({ commentId, userId }) {
+  return {
+    type: ActionType.TOGGLE_UP_VOTE_DETAIL_THREAD_COMMENT,
+    payload: {
+      userId,
+      commentId,
+    },
+  };
+}
+
+export function toggleDownVoteDetailThreadCommentActionCreator({ commentId, userId }) {
+  return {
+    type: ActionType.TOGGLE_DOWN_VOTE_DETAIL_THREAD_COMMENT,
+    payload: {
+      userId,
+      commentId,
+    },
+  };
+}
+
+export function neutralizeDetailThreadCommentUpVoteActionCreator({ commentId, userId }) {
+  return {
+    type: ActionType.NEUTRALIZE_DETAIL_THREAD_COMMENT_UPVOTE,
+    payload: {
+      userId,
+      commentId,
+    },
+  };
+}
+
+export function neutralizeDetailThreadCommentDownVoteActionCreator(
+  { commentId, userId },
+) {
+  return {
+    type: ActionType.NEUTRALIZE_DETAIL_THREAD_COMMENT_DOWN_VOTE_COMMENT,
+    payload: {
+      userId,
+      commentId,
     },
   };
 }
@@ -113,28 +155,28 @@ export function asyncUpVoteDetailThread(threadId) {
     }
 
     if (alreadyUpvoted) {
-      dispatch(neutralizeDetailThreadUpVoteActionCreator({ threadId, userId: authUser.id }));
+      dispatch(neutralizeDetailThreadUpVoteActionCreator({ userId: authUser.id }));
 
       try {
         await api.neutralizeThreadVote({ id: threadId });
       } catch (error) {
         alert(error.message);
-        dispatch(neutralizeDetailThreadUpVoteActionCreator({ threadId, userId: authUser.id }));
+        dispatch(neutralizeDetailThreadUpVoteActionCreator({ userId: authUser.id }));
       }
 
       dispatch(hideLoading());
     } else {
       if (alreadyDownVoted) {
-        dispatch(neutralizeDetailThreadDownVoteActionCreator({ threadId, userId: authUser.id }));
+        dispatch(neutralizeDetailThreadDownVoteActionCreator({ userId: authUser.id }));
       }
 
-      dispatch(toggleUpVoteDetailThreadActionCreator({ threadId, userId: authUser.id }));
+      dispatch(toggleUpVoteDetailThreadActionCreator({ userId: authUser.id }));
 
       try {
         await api.upVoteThread({ id: threadId });
       } catch (error) {
         alert(error.message);
-        dispatch(toggleUpVoteDetailThreadActionCreator({ threadId, userId: authUser.id }));
+        dispatch(toggleUpVoteDetailThreadActionCreator({ userId: authUser.id }));
       }
 
       dispatch(hideLoading());
@@ -165,28 +207,156 @@ export function asyncDownVoteDetailThread(threadId) {
     }
 
     if (alreadyDownvoted) {
-      dispatch(neutralizeDetailThreadDownVoteActionCreator({ threadId, userId: authUser.id }));
+      dispatch(neutralizeDetailThreadDownVoteActionCreator({ userId: authUser.id }));
 
       try {
         await api.neutralizeThreadVote({ id: threadId });
       } catch (error) {
         alert(error.message);
-        dispatch(neutralizeDetailThreadDownVoteActionCreator({ threadId, userId: authUser.id }));
+        dispatch(neutralizeDetailThreadDownVoteActionCreator({ userId: authUser.id }));
       }
 
       dispatch(hideLoading());
     } else {
       if (alreadyUpvoted) {
-        dispatch(neutralizeDetailThreadUpVoteActionCreator({ threadId, userId: authUser.id }));
+        dispatch(neutralizeDetailThreadUpVoteActionCreator({ userId: authUser.id }));
       }
 
-      dispatch(toggleDownVoteDetailThreadActionCreator({ threadId, userId: authUser.id }));
+      dispatch(toggleDownVoteDetailThreadActionCreator({ userId: authUser.id }));
 
       try {
         await api.downVoteThread({ id: threadId });
       } catch (error) {
         alert(error.message);
-        dispatch(toggleDownVoteDetailThreadActionCreator({ threadId, userId: authUser.id }));
+        dispatch(toggleDownVoteDetailThreadActionCreator({ userId: authUser.id }));
+      }
+
+      dispatch(hideLoading());
+    }
+  };
+}
+
+export function asyncUpVoteDetailThreadComment({ threadId, commentId }) {
+  return async (dispatch, getState) => {
+    dispatch(showLoading());
+
+    const { authUser, detailThread: { comments } } = getState();
+
+    if (authUser === null) {
+      alert('You must be login to vote a comment thread!');
+      dispatch(hideLoading());
+      return;
+    }
+
+    const filterComment = comments.filter((comment) => comment.id === commentId);
+
+    let alreadyUpvoted = false;
+    let alreadyDownVoted = false;
+
+    if (filterComment[0].upVotesBy.includes(authUser.id)) {
+      alreadyUpvoted = true;
+    }
+    if (filterComment[0].downVotesBy.includes(authUser.id)) {
+      alreadyDownVoted = true;
+    }
+
+    if (alreadyUpvoted) {
+      dispatch(neutralizeDetailThreadCommentUpVoteActionCreator(
+        { commentId, userId: authUser.id },
+      ));
+
+      try {
+        await api.neutralizeCommentVote({ threadId, commentId });
+      } catch (error) {
+        alert(error.message);
+        dispatch(neutralizeDetailThreadCommentUpVoteActionCreator(
+          { commentId, userId: authUser.id },
+        ));
+      }
+
+      dispatch(hideLoading());
+    } else {
+      if (alreadyDownVoted) {
+        dispatch(neutralizeDetailThreadCommentDownVoteActionCreator(
+          { commentId, userId: authUser.id },
+        ));
+      }
+
+      dispatch(toggleUpVoteDetailThreadCommentActionCreator(
+        { commentId, userId: authUser.id },
+      ));
+
+      try {
+        await api.upVoteComment({ threadId, commentId });
+      } catch (error) {
+        alert(error.message);
+        dispatch(toggleUpVoteDetailThreadCommentActionCreator(
+          { commentId, userId: authUser.id },
+        ));
+      }
+
+      dispatch(hideLoading());
+    }
+  };
+}
+
+export function asyncDownVoteDetailThreadComment({ threadId, commentId }) {
+  return async (dispatch, getState) => {
+    dispatch(showLoading());
+
+    const { authUser, detailThread: { comments } } = getState();
+
+    if (authUser === null) {
+      alert('You must be login to vote a comment thread!');
+      dispatch(hideLoading());
+      return;
+    }
+
+    const filterComment = comments.filter((comment) => comment.id === commentId);
+
+    let alreadyDownvoted = false;
+    let alreadyUpvoted = false;
+
+    if (filterComment[0].downVotesBy.includes(authUser.id)) {
+      alreadyDownvoted = true;
+    }
+    if (filterComment[0].upVotesBy.includes(authUser.id)) {
+      alreadyUpvoted = true;
+    }
+
+    if (alreadyDownvoted) {
+      dispatch(neutralizeDetailThreadCommentDownVoteActionCreator(
+        { commentId, userId: authUser.id },
+      ));
+
+      try {
+        await api.neutralizeCommentVote({ threadId, commentId });
+      } catch (error) {
+        alert(error.message);
+        dispatch(neutralizeDetailThreadCommentDownVoteActionCreator(
+          { commentId, userId: authUser.id },
+        ));
+      }
+
+      dispatch(hideLoading());
+    } else {
+      if (alreadyUpvoted) {
+        dispatch(neutralizeDetailThreadCommentUpVoteActionCreator(
+          { commentId, userId: authUser.id },
+        ));
+      }
+
+      dispatch(toggleDownVoteDetailThreadCommentActionCreator(
+        { commentId, userId: authUser.id },
+      ));
+
+      try {
+        await api.downVoteComment({ threadId, commentId });
+      } catch (error) {
+        alert(error.message);
+        dispatch(toggleDownVoteDetailThreadCommentActionCreator(
+          { commentId, userId: authUser.id },
+        ));
       }
 
       dispatch(hideLoading());

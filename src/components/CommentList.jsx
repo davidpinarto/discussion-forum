@@ -1,14 +1,18 @@
 import React from 'react';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { FaRegThumbsUp, FaRegThumbsDown } from 'react-icons/fa';
 import { postedAt } from '../utils';
+import { asyncUpVoteDetailThreadComment, asyncDownVoteDetailThreadComment } from '../states/detailThread/action';
 
 export function CommentList() {
   const {
     detailThread,
   } = useSelector((states) => states);
+
+  const dispatch = useDispatch();
+
   const {
-    comments,
+    id: threadId, comments,
   } = detailThread;
 
   return (
@@ -26,14 +30,16 @@ export function CommentList() {
               {content}
             </p>
             <div className="comment-info">
-              <div className="likes">
+              <button className="likes" onClick={() => dispatch(asyncUpVoteDetailThreadComment({ threadId, commentId: id }))}>
                 <FaRegThumbsUp />
-                <p>{upVotesBy.length}</p>
-              </div>
-              <div className="dislikes">
+                {' '}
+                {upVotesBy.length}
+              </button>
+              <button className="dislikes" onClick={() => dispatch(asyncDownVoteDetailThreadComment({ threadId, commentId: id }))}>
                 <FaRegThumbsDown />
-                <p>{downVotesBy.length}</p>
-              </div>
+                {' '}
+                {downVotesBy.length}
+              </button>
               <p>{postedAt(createdAt)}</p>
             </div>
           </li>
