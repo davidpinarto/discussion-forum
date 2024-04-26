@@ -11,9 +11,7 @@ export function threadsReducer(threads = [], action = {}) {
         if (thread.id === action.payload.threadId) {
           return {
             ...thread,
-            upVotesBy: thread.upVotesBy.includes(action.payload.userId)
-              ? thread.upVotesBy.filter((id) => id !== action.payload.userId)
-              : thread.upVotesBy.concat([action.payload.userId]),
+            upVotesBy: thread.upVotesBy.concat([action.payload.userId]),
           };
         }
         return thread;
@@ -23,9 +21,37 @@ export function threadsReducer(threads = [], action = {}) {
         if (thread.id === action.payload.threadId) {
           return {
             ...thread,
-            downVotesBy: thread.downVotesBy.includes(action.payload.userId)
-              ? thread.downVotesBy.filter((id) => id !== action.payload.userId)
-              : thread.downVotesBy.concat([action.payload.userId]),
+            downVotesBy: thread.downVotesBy.concat([action.payload.userId]),
+          };
+        }
+        return thread;
+      });
+    case ActionType.NEUTRALIZE_THREAD_UPVOTE:
+      return threads.map((thread) => {
+        if (thread.id === action.payload.threadId) {
+          const { upVotesBy } = thread;
+          const updatedUpVotesBy = upVotesBy.filter(
+            (userId) => userId !== action.payload.userId,
+          );
+
+          return {
+            ...thread,
+            upVotesBy: updatedUpVotesBy,
+          };
+        }
+        return thread;
+      });
+    case ActionType.NEUTRALIZE_THREAD_DOWN_VOTE:
+      return threads.map((thread) => {
+        if (thread.id === action.payload.threadId) {
+          const { downVotesBy } = thread;
+          const updatedDownVotesBy = downVotesBy.filter(
+            (userId) => userId !== action.payload.userId,
+          );
+
+          return {
+            ...thread,
+            downVotesBy: updatedDownVotesBy,
           };
         }
         return thread;
