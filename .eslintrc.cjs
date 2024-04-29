@@ -33,5 +33,6 @@ module.exports = {
     'jsx-a11y/label-has-associated-control': 'off',
     'no-case-declarations': 'off',
     'consistent-return': 'off',
+    'import/no-extraneous-dependencies': 'off',
   },
 };
