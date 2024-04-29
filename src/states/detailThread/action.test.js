@@ -187,7 +187,7 @@ describe('detailThread thunks', () => {
       expect(spyAlert).toHaveBeenCalledWith('Add new comment success!');
     });
 
-    it('should dispatch action correctly when data fetching success', async () => {
+    it('should dispatch action and call alert correctly when data fetching failed', async () => {
       api.createComment = () => Promise.reject(fakeErrorResponse);
       const fakePayload = { id: 'thread-123', content: 'this is comment' };
 
