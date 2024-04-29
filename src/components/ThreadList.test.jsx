@@ -78,7 +78,7 @@ describe('ThreadList component', () => {
       },
     });
 
-    const { getByText, getByRole } = await act(async () => render(
+    const { getByText, container } = await act(async () => render(
       <BrowserRouter>
         <Provider store={mockStores}>
           <ThreadList />
@@ -86,12 +86,11 @@ describe('ThreadList component', () => {
       </BrowserRouter>,
     ));
 
-    const threadList = getByRole('list');
-    const threadItem = threadList.children;
+    const threadListItem = container.querySelectorAll('.thread-list > li');
 
     expect(getByText('Thread Pertama')).toBeInTheDocument();
     expect(getByText('Thread Kedua')).toBeInTheDocument();
-    expect(threadItem.length).toBe(2);
+    expect(threadListItem.length).toBe(2);
   });
 
   it('renders filtered threads correctly', async () => {
@@ -117,7 +116,7 @@ describe('ThreadList component', () => {
       },
     });
 
-    const { getByText, getByRole } = await act(async () => render(
+    const { getByText, container } = await act(async () => render(
       <BrowserRouter>
         <Provider store={mockStores}>
           <ThreadList filteredThreads={mockFilteredThreads} />
@@ -125,10 +124,35 @@ describe('ThreadList component', () => {
       </BrowserRouter>,
     ));
 
-    const threadList = getByRole('list');
-    const threadItem = threadList.children;
+    const threadListItem = container.querySelectorAll('.thread-list > li');
 
     expect(getByText('Thread Kedua')).toBeInTheDocument();
-    expect(threadItem.length).toBe(1);
+    expect(threadListItem.length).toBe(1);
+  });
+
+  it('renders threads with correct links', async () => {
+    const mockThreadsReducer = (threads = mockedThreads) => threads;
+    const mockUsersReducer = (users = mockedUsers) => users;
+    const mockStores = configureStore({
+      reducer: {
+        threads: mockThreadsReducer,
+        users: mockUsersReducer,
+      },
+    });
+
+    const { getByText, container } = await act(async () => render(
+      <BrowserRouter>
+        <Provider store={mockStores}>
+          <ThreadList />
+        </Provider>
+      </BrowserRouter>,
+    ));
+
+    const threadListItem = container.querySelectorAll('.thread-list > li');
+
+    threadListItem.forEach((threadItem, index) => {
+      const threadLink = getByText(mockedThreads[index].title);
+      expect(threadLink).toHaveAttribute('href', `/threads/${mockedThreads[index].id}`);
+    });
   });
 });
