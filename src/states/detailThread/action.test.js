@@ -24,6 +24,46 @@ import {
 const fakeErrorResponse = new Error('Ups, something went wrong');
 
 describe('detailThread thunks', () => {
+  let initialState = null;
+
+  beforeEach(() => {
+    initialState = {
+      authUser: null,
+      detailThread: {
+        id: 'thread-1',
+        title: 'Thread Pertama',
+        body: 'Ini adalah thread pertama',
+        category: 'General',
+        createdAt: '2021-06-21T07:00:00.000Z',
+        owner: {
+          id: 'users-1',
+          name: 'John Doe',
+          avatar: 'https://generated-image-url.jpg',
+        },
+        upVotesBy: [],
+        downVotesBy: [],
+        comments: [
+          {
+            id: 'comment-1',
+            content: 'Ini adalah komentar pertama',
+            createdAt: '2021-06-21T07:00:00.000Z',
+            owner: {
+              id: 'users-1',
+              name: 'John Doe',
+              avatar: 'https://generated-image-url.jpg',
+            },
+            upVotesBy: [],
+            downVotesBy: [],
+          },
+        ],
+      },
+    };
+  });
+
+  afterEach(() => {
+    initialState = null;
+  });
+
   describe('asyncGetDetailThread thunk', () => {
     beforeEach(() => {
       api._getDetailThread = api.getDetailThread;
@@ -149,7 +189,6 @@ describe('detailThread thunks', () => {
 
     it('should dispatch action correctly when data fetching success', async () => {
       api.createComment = () => Promise.reject(fakeErrorResponse);
-      api.getDetailThread = () => Promise.resolve(fakeErrorResponse);
       const fakePayload = { id: 'thread-123', content: 'this is comment' };
 
       const dispatch = vi.fn();
@@ -178,38 +217,6 @@ describe('detailThread thunks', () => {
     });
 
     it('should alert You must be login to vote a thread! when authUser is null', async () => {
-      const initialState = {
-        authUser: null,
-        detailThread: {
-          id: 'thread-1',
-          title: 'Thread Pertama',
-          body: 'Ini adalah thread pertama',
-          category: 'General',
-          createdAt: '2021-06-21T07:00:00.000Z',
-          owner: {
-            id: 'users-1',
-            name: 'John Doe',
-            avatar: 'https://generated-image-url.jpg',
-          },
-          upVotesBy: [],
-          downVotesBy: [],
-          comments: [
-            {
-              id: 'comment-1',
-              content: 'Ini adalah komentar pertama',
-              createdAt: '2021-06-21T07:00:00.000Z',
-              owner: {
-                id: 'users-1',
-                name: 'John Doe',
-                avatar: 'https://generated-image-url.jpg',
-              },
-              upVotesBy: [],
-              downVotesBy: [],
-            },
-          ],
-        },
-      };
-
       const getState = vi.fn(() => initialState);
       const dispatch = vi.fn();
       const spyAlert = vi.spyOn(window, 'alert');
@@ -223,7 +230,7 @@ describe('detailThread thunks', () => {
     });
 
     it('should neutralize detail thread UpVote when user already upvote the thread', async () => {
-      const initialState = {
+      const getState = vi.fn(() => ({
         authUser: {
           id: 'users-1',
           name: 'John Doe',
@@ -231,36 +238,10 @@ describe('detailThread thunks', () => {
           avatar: 'https://generated-image-url.jpg',
         },
         detailThread: {
-          id: 'thread-1',
-          title: 'Thread Pertama',
-          body: 'Ini adalah thread pertama',
-          category: 'General',
-          createdAt: '2021-06-21T07:00:00.000Z',
-          owner: {
-            id: 'users-1',
-            name: 'John Doe',
-            avatar: 'https://generated-image-url.jpg',
-          },
+          ...initialState.detailThread,
           upVotesBy: ['users-1'],
-          downVotesBy: [],
-          comments: [
-            {
-              id: 'comment-1',
-              content: 'Ini adalah komentar pertama',
-              createdAt: '2021-06-21T07:00:00.000Z',
-              owner: {
-                id: 'users-1',
-                name: 'John Doe',
-                avatar: 'https://generated-image-url.jpg',
-              },
-              upVotesBy: [],
-              downVotesBy: [],
-            },
-          ],
         },
-      };
-
-      const getState = vi.fn(() => initialState);
+      }));
       const dispatch = vi.fn();
       api.neutralizeThreadVote = () => Promise.resolve({
         id: 'vote-1',
@@ -279,7 +260,7 @@ describe('detailThread thunks', () => {
     });
 
     it('should alert error message and undo neutralize detail thread UpVote when data fetching failed', async () => {
-      const initialState = {
+      const getState = vi.fn(() => ({
         authUser: {
           id: 'users-1',
           name: 'John Doe',
@@ -287,36 +268,10 @@ describe('detailThread thunks', () => {
           avatar: 'https://generated-image-url.jpg',
         },
         detailThread: {
-          id: 'thread-1',
-          title: 'Thread Pertama',
-          body: 'Ini adalah thread pertama',
-          category: 'General',
-          createdAt: '2021-06-21T07:00:00.000Z',
-          owner: {
-            id: 'users-1',
-            name: 'John Doe',
-            avatar: 'https://generated-image-url.jpg',
-          },
+          ...initialState.detailThread,
           upVotesBy: ['users-1'],
-          downVotesBy: [],
-          comments: [
-            {
-              id: 'comment-1',
-              content: 'Ini adalah komentar pertama',
-              createdAt: '2021-06-21T07:00:00.000Z',
-              owner: {
-                id: 'users-1',
-                name: 'John Doe',
-                avatar: 'https://generated-image-url.jpg',
-              },
-              upVotesBy: [],
-              downVotesBy: [],
-            },
-          ],
         },
-      };
-
-      const getState = vi.fn(() => initialState);
+      }));
       const dispatch = vi.fn();
       window.alert = vi.fn();
       api.neutralizeThreadVote = () => Promise.reject(fakeErrorResponse);
@@ -333,44 +288,15 @@ describe('detailThread thunks', () => {
     });
 
     it('should up vote detail thread', async () => {
-      const initialState = {
+      const getState = vi.fn(() => ({
+        ...initialState,
         authUser: {
           id: 'users-1',
           name: 'John Doe',
           email: 'john@example.com',
           avatar: 'https://generated-image-url.jpg',
         },
-        detailThread: {
-          id: 'thread-1',
-          title: 'Thread Pertama',
-          body: 'Ini adalah thread pertama',
-          category: 'General',
-          createdAt: '2021-06-21T07:00:00.000Z',
-          owner: {
-            id: 'users-1',
-            name: 'John Doe',
-            avatar: 'https://generated-image-url.jpg',
-          },
-          upVotesBy: [],
-          downVotesBy: [],
-          comments: [
-            {
-              id: 'comment-1',
-              content: 'Ini adalah komentar pertama',
-              createdAt: '2021-06-21T07:00:00.000Z',
-              owner: {
-                id: 'users-1',
-                name: 'John Doe',
-                avatar: 'https://generated-image-url.jpg',
-              },
-              upVotesBy: [],
-              downVotesBy: [],
-            },
-          ],
-        },
-      };
-
-      const getState = vi.fn(() => initialState);
+      }));
       const dispatch = vi.fn();
       api.upVoteThread = () => Promise.resolve({
         id: 'vote-1',
@@ -389,7 +315,7 @@ describe('detailThread thunks', () => {
     });
 
     it('should up vote detail thread and neutralize down vote when user already down vote detail thread', async () => {
-      const initialState = {
+      const getState = vi.fn(() => ({
         authUser: {
           id: 'users-1',
           name: 'John Doe',
@@ -397,36 +323,10 @@ describe('detailThread thunks', () => {
           avatar: 'https://generated-image-url.jpg',
         },
         detailThread: {
-          id: 'thread-1',
-          title: 'Thread Pertama',
-          body: 'Ini adalah thread pertama',
-          category: 'General',
-          createdAt: '2021-06-21T07:00:00.000Z',
-          owner: {
-            id: 'users-1',
-            name: 'John Doe',
-            avatar: 'https://generated-image-url.jpg',
-          },
-          upVotesBy: [],
+          ...initialState.detailThread,
           downVotesBy: ['users-1'],
-          comments: [
-            {
-              id: 'comment-1',
-              content: 'Ini adalah komentar pertama',
-              createdAt: '2021-06-21T07:00:00.000Z',
-              owner: {
-                id: 'users-1',
-                name: 'John Doe',
-                avatar: 'https://generated-image-url.jpg',
-              },
-              upVotesBy: [],
-              downVotesBy: [],
-            },
-          ],
         },
-      };
-
-      const getState = vi.fn(() => initialState);
+      }));
       const dispatch = vi.fn();
       api.upVoteThread = () => Promise.resolve({
         id: 'vote-1',
@@ -447,44 +347,15 @@ describe('detailThread thunks', () => {
     });
 
     it('should undo up vote detail thread when data fetching is fail', async () => {
-      const initialState = {
+      const getState = vi.fn(() => ({
+        ...initialState,
         authUser: {
           id: 'users-1',
           name: 'John Doe',
           email: 'john@example.com',
           avatar: 'https://generated-image-url.jpg',
         },
-        detailThread: {
-          id: 'thread-1',
-          title: 'Thread Pertama',
-          body: 'Ini adalah thread pertama',
-          category: 'General',
-          createdAt: '2021-06-21T07:00:00.000Z',
-          owner: {
-            id: 'users-1',
-            name: 'John Doe',
-            avatar: 'https://generated-image-url.jpg',
-          },
-          upVotesBy: [],
-          downVotesBy: [],
-          comments: [
-            {
-              id: 'comment-1',
-              content: 'Ini adalah komentar pertama',
-              createdAt: '2021-06-21T07:00:00.000Z',
-              owner: {
-                id: 'users-1',
-                name: 'John Doe',
-                avatar: 'https://generated-image-url.jpg',
-              },
-              upVotesBy: [],
-              downVotesBy: [],
-            },
-          ],
-        },
-      };
-
-      const getState = vi.fn(() => initialState);
+      }));
       const dispatch = vi.fn();
       window.alert = vi.fn();
       api.upVoteThread = () => Promise.reject(fakeErrorResponse);
@@ -516,38 +387,6 @@ describe('detailThread thunks', () => {
     });
 
     it('should alert You must be login to vote a thread! when authUser is null', async () => {
-      const initialState = {
-        authUser: null,
-        detailThread: {
-          id: 'thread-1',
-          title: 'Thread Pertama',
-          body: 'Ini adalah thread pertama',
-          category: 'General',
-          createdAt: '2021-06-21T07:00:00.000Z',
-          owner: {
-            id: 'users-1',
-            name: 'John Doe',
-            avatar: 'https://generated-image-url.jpg',
-          },
-          upVotesBy: [],
-          downVotesBy: [],
-          comments: [
-            {
-              id: 'comment-1',
-              content: 'Ini adalah komentar pertama',
-              createdAt: '2021-06-21T07:00:00.000Z',
-              owner: {
-                id: 'users-1',
-                name: 'John Doe',
-                avatar: 'https://generated-image-url.jpg',
-              },
-              upVotesBy: [],
-              downVotesBy: [],
-            },
-          ],
-        },
-      };
-
       const getState = vi.fn(() => initialState);
       const dispatch = vi.fn();
       const spyAlert = vi.spyOn(window, 'alert');
@@ -561,7 +400,7 @@ describe('detailThread thunks', () => {
     });
 
     it('should neutralize detail thread downVote when user already downvote the thread', async () => {
-      const initialState = {
+      const getState = vi.fn(() => ({
         authUser: {
           id: 'users-1',
           name: 'John Doe',
@@ -569,36 +408,10 @@ describe('detailThread thunks', () => {
           avatar: 'https://generated-image-url.jpg',
         },
         detailThread: {
-          id: 'thread-1',
-          title: 'Thread Pertama',
-          body: 'Ini adalah thread pertama',
-          category: 'General',
-          createdAt: '2021-06-21T07:00:00.000Z',
-          owner: {
-            id: 'users-1',
-            name: 'John Doe',
-            avatar: 'https://generated-image-url.jpg',
-          },
-          upVotesBy: [],
+          ...initialState.detailThread,
           downVotesBy: ['users-1'],
-          comments: [
-            {
-              id: 'comment-1',
-              content: 'Ini adalah komentar pertama',
-              createdAt: '2021-06-21T07:00:00.000Z',
-              owner: {
-                id: 'users-1',
-                name: 'John Doe',
-                avatar: 'https://generated-image-url.jpg',
-              },
-              upVotesBy: [],
-              downVotesBy: [],
-            },
-          ],
         },
-      };
-
-      const getState = vi.fn(() => initialState);
+      }));
       const dispatch = vi.fn();
       api.neutralizeThreadVote = () => Promise.resolve({
         id: 'vote-1',
@@ -617,7 +430,7 @@ describe('detailThread thunks', () => {
     });
 
     it('should alert error message and undo neutralize detail thread down vote when data fetching failed', async () => {
-      const initialState = {
+      const getState = vi.fn(() => ({
         authUser: {
           id: 'users-1',
           name: 'John Doe',
@@ -625,36 +438,10 @@ describe('detailThread thunks', () => {
           avatar: 'https://generated-image-url.jpg',
         },
         detailThread: {
-          id: 'thread-1',
-          title: 'Thread Pertama',
-          body: 'Ini adalah thread pertama',
-          category: 'General',
-          createdAt: '2021-06-21T07:00:00.000Z',
-          owner: {
-            id: 'users-1',
-            name: 'John Doe',
-            avatar: 'https://generated-image-url.jpg',
-          },
-          upVotesBy: [],
+          ...initialState.detailThread,
           downVotesBy: ['users-1'],
-          comments: [
-            {
-              id: 'comment-1',
-              content: 'Ini adalah komentar pertama',
-              createdAt: '2021-06-21T07:00:00.000Z',
-              owner: {
-                id: 'users-1',
-                name: 'John Doe',
-                avatar: 'https://generated-image-url.jpg',
-              },
-              upVotesBy: [],
-              downVotesBy: [],
-            },
-          ],
         },
-      };
-
-      const getState = vi.fn(() => initialState);
+      }));
       const dispatch = vi.fn();
       window.alert = vi.fn();
       api.neutralizeThreadVote = () => Promise.reject(fakeErrorResponse);
@@ -671,44 +458,15 @@ describe('detailThread thunks', () => {
     });
 
     it('should down vote detail thread', async () => {
-      const initialState = {
+      const getState = vi.fn(() => ({
+        ...initialState,
         authUser: {
           id: 'users-1',
           name: 'John Doe',
           email: 'john@example.com',
           avatar: 'https://generated-image-url.jpg',
         },
-        detailThread: {
-          id: 'thread-1',
-          title: 'Thread Pertama',
-          body: 'Ini adalah thread pertama',
-          category: 'General',
-          createdAt: '2021-06-21T07:00:00.000Z',
-          owner: {
-            id: 'users-1',
-            name: 'John Doe',
-            avatar: 'https://generated-image-url.jpg',
-          },
-          upVotesBy: [],
-          downVotesBy: [],
-          comments: [
-            {
-              id: 'comment-1',
-              content: 'Ini adalah komentar pertama',
-              createdAt: '2021-06-21T07:00:00.000Z',
-              owner: {
-                id: 'users-1',
-                name: 'John Doe',
-                avatar: 'https://generated-image-url.jpg',
-              },
-              upVotesBy: [],
-              downVotesBy: [],
-            },
-          ],
-        },
-      };
-
-      const getState = vi.fn(() => initialState);
+      }));
       const dispatch = vi.fn();
       api.downVoteThread = () => Promise.resolve({
         id: 'vote-1',
@@ -727,7 +485,7 @@ describe('detailThread thunks', () => {
     });
 
     it('should down vote detail thread and neutralize up vote when user already up vote detail thread', async () => {
-      const initialState = {
+      const getState = vi.fn(() => ({
         authUser: {
           id: 'users-1',
           name: 'John Doe',
@@ -735,36 +493,10 @@ describe('detailThread thunks', () => {
           avatar: 'https://generated-image-url.jpg',
         },
         detailThread: {
-          id: 'thread-1',
-          title: 'Thread Pertama',
-          body: 'Ini adalah thread pertama',
-          category: 'General',
-          createdAt: '2021-06-21T07:00:00.000Z',
-          owner: {
-            id: 'users-1',
-            name: 'John Doe',
-            avatar: 'https://generated-image-url.jpg',
-          },
+          ...initialState.detailThread,
           upVotesBy: ['users-1'],
-          downVotesBy: [],
-          comments: [
-            {
-              id: 'comment-1',
-              content: 'Ini adalah komentar pertama',
-              createdAt: '2021-06-21T07:00:00.000Z',
-              owner: {
-                id: 'users-1',
-                name: 'John Doe',
-                avatar: 'https://generated-image-url.jpg',
-              },
-              upVotesBy: [],
-              downVotesBy: [],
-            },
-          ],
         },
-      };
-
-      const getState = vi.fn(() => initialState);
+      }));
       const dispatch = vi.fn();
       api.downVoteThread = () => Promise.resolve({
         id: 'vote-1',
@@ -785,44 +517,15 @@ describe('detailThread thunks', () => {
     });
 
     it('should undo down vote detail thread when data fetching is fail', async () => {
-      const initialState = {
+      const getState = vi.fn(() => ({
+        ...initialState,
         authUser: {
           id: 'users-1',
           name: 'John Doe',
           email: 'john@example.com',
           avatar: 'https://generated-image-url.jpg',
         },
-        detailThread: {
-          id: 'thread-1',
-          title: 'Thread Pertama',
-          body: 'Ini adalah thread pertama',
-          category: 'General',
-          createdAt: '2021-06-21T07:00:00.000Z',
-          owner: {
-            id: 'users-1',
-            name: 'John Doe',
-            avatar: 'https://generated-image-url.jpg',
-          },
-          upVotesBy: [],
-          downVotesBy: [],
-          comments: [
-            {
-              id: 'comment-1',
-              content: 'Ini adalah komentar pertama',
-              createdAt: '2021-06-21T07:00:00.000Z',
-              owner: {
-                id: 'users-1',
-                name: 'John Doe',
-                avatar: 'https://generated-image-url.jpg',
-              },
-              upVotesBy: [],
-              downVotesBy: [],
-            },
-          ],
-        },
-      };
-
-      const getState = vi.fn(() => initialState);
+      }));
       const dispatch = vi.fn();
       window.alert = vi.fn();
       api.downVoteThread = () => Promise.reject(fakeErrorResponse);
@@ -854,38 +557,6 @@ describe('detailThread thunks', () => {
     });
 
     it('should alert You must be login to vote a comment thread! when authUser is null', async () => {
-      const initialState = {
-        authUser: null,
-        detailThread: {
-          id: 'thread-1',
-          title: 'Thread Pertama',
-          body: 'Ini adalah thread pertama',
-          category: 'General',
-          createdAt: '2021-06-21T07:00:00.000Z',
-          owner: {
-            id: 'users-1',
-            name: 'John Doe',
-            avatar: 'https://generated-image-url.jpg',
-          },
-          upVotesBy: [],
-          downVotesBy: [],
-          comments: [
-            {
-              id: 'comment-1',
-              content: 'Ini adalah komentar pertama',
-              createdAt: '2021-06-21T07:00:00.000Z',
-              owner: {
-                id: 'users-1',
-                name: 'John Doe',
-                avatar: 'https://generated-image-url.jpg',
-              },
-              upVotesBy: [],
-              downVotesBy: [],
-            },
-          ],
-        },
-      };
-
       const getState = vi.fn(() => initialState);
       const dispatch = vi.fn();
       const spyAlert = vi.spyOn(window, 'alert');
@@ -899,7 +570,7 @@ describe('detailThread thunks', () => {
     });
 
     it('should neutralize detail thread comment UpVote when user already upvote the comment in the thread', async () => {
-      const initialState = {
+      const getState = vi.fn(() => ({
         authUser: {
           id: 'users-1',
           name: 'John Doe',
@@ -907,36 +578,15 @@ describe('detailThread thunks', () => {
           avatar: 'https://generated-image-url.jpg',
         },
         detailThread: {
-          id: 'thread-1',
-          title: 'Thread Pertama',
-          body: 'Ini adalah thread pertama',
-          category: 'General',
-          createdAt: '2021-06-21T07:00:00.000Z',
-          owner: {
-            id: 'users-1',
-            name: 'John Doe',
-            avatar: 'https://generated-image-url.jpg',
-          },
-          upVotesBy: [],
-          downVotesBy: [],
+          ...initialState.detailThread,
           comments: [
             {
-              id: 'comment-1',
-              content: 'Ini adalah komentar pertama',
-              createdAt: '2021-06-21T07:00:00.000Z',
-              owner: {
-                id: 'users-1',
-                name: 'John Doe',
-                avatar: 'https://generated-image-url.jpg',
-              },
+              ...initialState.detailThread.comments[0],
               upVotesBy: ['users-1'],
-              downVotesBy: [],
             },
           ],
         },
-      };
-
-      const getState = vi.fn(() => initialState);
+      }));
       const dispatch = vi.fn();
       api.neutralizeCommentVote = () => Promise.resolve({
         id: 'vote-1',
@@ -955,7 +605,7 @@ describe('detailThread thunks', () => {
     });
 
     it('should alert error message and undo neutralize detail thread comment UpVote when data fetching failed', async () => {
-      const initialState = {
+      const getState = vi.fn(() => ({
         authUser: {
           id: 'users-1',
           name: 'John Doe',
@@ -963,36 +613,15 @@ describe('detailThread thunks', () => {
           avatar: 'https://generated-image-url.jpg',
         },
         detailThread: {
-          id: 'thread-1',
-          title: 'Thread Pertama',
-          body: 'Ini adalah thread pertama',
-          category: 'General',
-          createdAt: '2021-06-21T07:00:00.000Z',
-          owner: {
-            id: 'users-1',
-            name: 'John Doe',
-            avatar: 'https://generated-image-url.jpg',
-          },
-          upVotesBy: [],
-          downVotesBy: [],
+          ...initialState.detailThread,
           comments: [
             {
-              id: 'comment-1',
-              content: 'Ini adalah komentar pertama',
-              createdAt: '2021-06-21T07:00:00.000Z',
-              owner: {
-                id: 'users-1',
-                name: 'John Doe',
-                avatar: 'https://generated-image-url.jpg',
-              },
+              ...initialState.detailThread.comments[0],
               upVotesBy: ['users-1'],
-              downVotesBy: [],
             },
           ],
         },
-      };
-
-      const getState = vi.fn(() => initialState);
+      }));
       const dispatch = vi.fn();
       window.alert = vi.fn();
       api.neutralizeCommentVote = () => Promise.reject(fakeErrorResponse);
@@ -1009,44 +638,15 @@ describe('detailThread thunks', () => {
     });
 
     it('should up vote detail thread comment', async () => {
-      const initialState = {
+      const getState = vi.fn(() => ({
+        ...initialState,
         authUser: {
           id: 'users-1',
           name: 'John Doe',
           email: 'john@example.com',
           avatar: 'https://generated-image-url.jpg',
         },
-        detailThread: {
-          id: 'thread-1',
-          title: 'Thread Pertama',
-          body: 'Ini adalah thread pertama',
-          category: 'General',
-          createdAt: '2021-06-21T07:00:00.000Z',
-          owner: {
-            id: 'users-1',
-            name: 'John Doe',
-            avatar: 'https://generated-image-url.jpg',
-          },
-          upVotesBy: [],
-          downVotesBy: [],
-          comments: [
-            {
-              id: 'comment-1',
-              content: 'Ini adalah komentar pertama',
-              createdAt: '2021-06-21T07:00:00.000Z',
-              owner: {
-                id: 'users-1',
-                name: 'John Doe',
-                avatar: 'https://generated-image-url.jpg',
-              },
-              upVotesBy: [],
-              downVotesBy: [],
-            },
-          ],
-        },
-      };
-
-      const getState = vi.fn(() => initialState);
+      }));
       const dispatch = vi.fn();
       api.upVoteComment = () => Promise.resolve({
         id: 'vote-1',
@@ -1065,7 +665,7 @@ describe('detailThread thunks', () => {
     });
 
     it('should up vote detail thread comment and neutralize down vote comment when user already down vote comment', async () => {
-      const initialState = {
+      const getState = vi.fn(() => ({
         authUser: {
           id: 'users-1',
           name: 'John Doe',
@@ -1073,36 +673,15 @@ describe('detailThread thunks', () => {
           avatar: 'https://generated-image-url.jpg',
         },
         detailThread: {
-          id: 'thread-1',
-          title: 'Thread Pertama',
-          body: 'Ini adalah thread pertama',
-          category: 'General',
-          createdAt: '2021-06-21T07:00:00.000Z',
-          owner: {
-            id: 'users-1',
-            name: 'John Doe',
-            avatar: 'https://generated-image-url.jpg',
-          },
-          upVotesBy: [],
-          downVotesBy: [],
+          ...initialState.detailThread,
           comments: [
             {
-              id: 'comment-1',
-              content: 'Ini adalah komentar pertama',
-              createdAt: '2021-06-21T07:00:00.000Z',
-              owner: {
-                id: 'users-1',
-                name: 'John Doe',
-                avatar: 'https://generated-image-url.jpg',
-              },
-              upVotesBy: [],
+              ...initialState.detailThread.comments[0],
               downVotesBy: ['users-1'],
             },
           ],
         },
-      };
-
-      const getState = vi.fn(() => initialState);
+      }));
       const dispatch = vi.fn();
       api.upVoteComment = () => Promise.resolve({
         id: 'vote-1',
@@ -1123,44 +702,15 @@ describe('detailThread thunks', () => {
     });
 
     it('should undo up vote detail thread comment when data fetching is fail', async () => {
-      const initialState = {
+      const getState = vi.fn(() => ({
+        ...initialState,
         authUser: {
           id: 'users-1',
           name: 'John Doe',
           email: 'john@example.com',
           avatar: 'https://generated-image-url.jpg',
         },
-        detailThread: {
-          id: 'thread-1',
-          title: 'Thread Pertama',
-          body: 'Ini adalah thread pertama',
-          category: 'General',
-          createdAt: '2021-06-21T07:00:00.000Z',
-          owner: {
-            id: 'users-1',
-            name: 'John Doe',
-            avatar: 'https://generated-image-url.jpg',
-          },
-          upVotesBy: [],
-          downVotesBy: [],
-          comments: [
-            {
-              id: 'comment-1',
-              content: 'Ini adalah komentar pertama',
-              createdAt: '2021-06-21T07:00:00.000Z',
-              owner: {
-                id: 'users-1',
-                name: 'John Doe',
-                avatar: 'https://generated-image-url.jpg',
-              },
-              upVotesBy: [],
-              downVotesBy: [],
-            },
-          ],
-        },
-      };
-
-      const getState = vi.fn(() => initialState);
+      }));
       const dispatch = vi.fn();
       window.alert = vi.fn();
       api.upVoteComment = () => Promise.reject(fakeErrorResponse);
@@ -1192,38 +742,6 @@ describe('detailThread thunks', () => {
     });
 
     it('should alert You must be login to vote a comment thread! when authUser is null', async () => {
-      const initialState = {
-        authUser: null,
-        detailThread: {
-          id: 'thread-1',
-          title: 'Thread Pertama',
-          body: 'Ini adalah thread pertama',
-          category: 'General',
-          createdAt: '2021-06-21T07:00:00.000Z',
-          owner: {
-            id: 'users-1',
-            name: 'John Doe',
-            avatar: 'https://generated-image-url.jpg',
-          },
-          upVotesBy: [],
-          downVotesBy: [],
-          comments: [
-            {
-              id: 'comment-1',
-              content: 'Ini adalah komentar pertama',
-              createdAt: '2021-06-21T07:00:00.000Z',
-              owner: {
-                id: 'users-1',
-                name: 'John Doe',
-                avatar: 'https://generated-image-url.jpg',
-              },
-              upVotesBy: [],
-              downVotesBy: [],
-            },
-          ],
-        },
-      };
-
       const getState = vi.fn(() => initialState);
       const dispatch = vi.fn();
       const spyAlert = vi.spyOn(window, 'alert');
@@ -1237,7 +755,7 @@ describe('detailThread thunks', () => {
     });
 
     it('should neutralize detail thread comment down Vote when user already down vote the comment in the thread', async () => {
-      const initialState = {
+      const getState = vi.fn(() => ({
         authUser: {
           id: 'users-1',
           name: 'John Doe',
@@ -1245,36 +763,15 @@ describe('detailThread thunks', () => {
           avatar: 'https://generated-image-url.jpg',
         },
         detailThread: {
-          id: 'thread-1',
-          title: 'Thread Pertama',
-          body: 'Ini adalah thread pertama',
-          category: 'General',
-          createdAt: '2021-06-21T07:00:00.000Z',
-          owner: {
-            id: 'users-1',
-            name: 'John Doe',
-            avatar: 'https://generated-image-url.jpg',
-          },
-          upVotesBy: [],
-          downVotesBy: [],
+          ...initialState.detailThread,
           comments: [
             {
-              id: 'comment-1',
-              content: 'Ini adalah komentar pertama',
-              createdAt: '2021-06-21T07:00:00.000Z',
-              owner: {
-                id: 'users-1',
-                name: 'John Doe',
-                avatar: 'https://generated-image-url.jpg',
-              },
-              upVotesBy: [],
+              ...initialState.detailThread.comments[0],
               downVotesBy: ['users-1'],
             },
           ],
         },
-      };
-
-      const getState = vi.fn(() => initialState);
+      }));
       const dispatch = vi.fn();
       api.neutralizeCommentVote = () => Promise.resolve({
         id: 'vote-1',
@@ -1293,7 +790,7 @@ describe('detailThread thunks', () => {
     });
 
     it('should alert error message and undo neutralize detail thread comment down Vote when data fetching failed', async () => {
-      const initialState = {
+      const getState = vi.fn(() => ({
         authUser: {
           id: 'users-1',
           name: 'John Doe',
@@ -1301,36 +798,15 @@ describe('detailThread thunks', () => {
           avatar: 'https://generated-image-url.jpg',
         },
         detailThread: {
-          id: 'thread-1',
-          title: 'Thread Pertama',
-          body: 'Ini adalah thread pertama',
-          category: 'General',
-          createdAt: '2021-06-21T07:00:00.000Z',
-          owner: {
-            id: 'users-1',
-            name: 'John Doe',
-            avatar: 'https://generated-image-url.jpg',
-          },
-          upVotesBy: [],
-          downVotesBy: [],
+          ...initialState.detailThread,
           comments: [
             {
-              id: 'comment-1',
-              content: 'Ini adalah komentar pertama',
-              createdAt: '2021-06-21T07:00:00.000Z',
-              owner: {
-                id: 'users-1',
-                name: 'John Doe',
-                avatar: 'https://generated-image-url.jpg',
-              },
-              upVotesBy: [],
+              ...initialState.detailThread.comments[0],
               downVotesBy: ['users-1'],
             },
           ],
         },
-      };
-
-      const getState = vi.fn(() => initialState);
+      }));
       const dispatch = vi.fn();
       window.alert = vi.fn();
       api.neutralizeCommentVote = () => Promise.reject(fakeErrorResponse);
@@ -1347,44 +823,15 @@ describe('detailThread thunks', () => {
     });
 
     it('should down vote detail thread comment', async () => {
-      const initialState = {
+      const getState = vi.fn(() => ({
+        ...initialState,
         authUser: {
           id: 'users-1',
           name: 'John Doe',
           email: 'john@example.com',
           avatar: 'https://generated-image-url.jpg',
         },
-        detailThread: {
-          id: 'thread-1',
-          title: 'Thread Pertama',
-          body: 'Ini adalah thread pertama',
-          category: 'General',
-          createdAt: '2021-06-21T07:00:00.000Z',
-          owner: {
-            id: 'users-1',
-            name: 'John Doe',
-            avatar: 'https://generated-image-url.jpg',
-          },
-          upVotesBy: [],
-          downVotesBy: [],
-          comments: [
-            {
-              id: 'comment-1',
-              content: 'Ini adalah komentar pertama',
-              createdAt: '2021-06-21T07:00:00.000Z',
-              owner: {
-                id: 'users-1',
-                name: 'John Doe',
-                avatar: 'https://generated-image-url.jpg',
-              },
-              upVotesBy: [],
-              downVotesBy: [],
-            },
-          ],
-        },
-      };
-
-      const getState = vi.fn(() => initialState);
+      }));
       const dispatch = vi.fn();
       api.downVoteComment = () => Promise.resolve({
         id: 'vote-1',
@@ -1403,7 +850,7 @@ describe('detailThread thunks', () => {
     });
 
     it('should down vote detail thread comment and neutralize up vote comment when user already up vote comment', async () => {
-      const initialState = {
+      const getState = vi.fn(() => ({
         authUser: {
           id: 'users-1',
           name: 'John Doe',
@@ -1411,36 +858,15 @@ describe('detailThread thunks', () => {
           avatar: 'https://generated-image-url.jpg',
         },
         detailThread: {
-          id: 'thread-1',
-          title: 'Thread Pertama',
-          body: 'Ini adalah thread pertama',
-          category: 'General',
-          createdAt: '2021-06-21T07:00:00.000Z',
-          owner: {
-            id: 'users-1',
-            name: 'John Doe',
-            avatar: 'https://generated-image-url.jpg',
-          },
-          upVotesBy: [],
-          downVotesBy: [],
+          ...initialState.detailThread,
           comments: [
             {
-              id: 'comment-1',
-              content: 'Ini adalah komentar pertama',
-              createdAt: '2021-06-21T07:00:00.000Z',
-              owner: {
-                id: 'users-1',
-                name: 'John Doe',
-                avatar: 'https://generated-image-url.jpg',
-              },
+              ...initialState.detailThread.comments[0],
               upVotesBy: ['users-1'],
-              downVotesBy: [],
             },
           ],
         },
-      };
-
-      const getState = vi.fn(() => initialState);
+      }));
       const dispatch = vi.fn();
       api.downVoteComment = () => Promise.resolve({
         id: 'vote-1',
@@ -1461,44 +887,15 @@ describe('detailThread thunks', () => {
     });
 
     it('should undo down vote detail thread comment when data fetching is fail', async () => {
-      const initialState = {
+      const getState = vi.fn(() => ({
+        ...initialState,
         authUser: {
           id: 'users-1',
           name: 'John Doe',
           email: 'john@example.com',
           avatar: 'https://generated-image-url.jpg',
         },
-        detailThread: {
-          id: 'thread-1',
-          title: 'Thread Pertama',
-          body: 'Ini adalah thread pertama',
-          category: 'General',
-          createdAt: '2021-06-21T07:00:00.000Z',
-          owner: {
-            id: 'users-1',
-            name: 'John Doe',
-            avatar: 'https://generated-image-url.jpg',
-          },
-          upVotesBy: [],
-          downVotesBy: [],
-          comments: [
-            {
-              id: 'comment-1',
-              content: 'Ini adalah komentar pertama',
-              createdAt: '2021-06-21T07:00:00.000Z',
-              owner: {
-                id: 'users-1',
-                name: 'John Doe',
-                avatar: 'https://generated-image-url.jpg',
-              },
-              upVotesBy: [],
-              downVotesBy: [],
-            },
-          ],
-        },
-      };
-
-      const getState = vi.fn(() => initialState);
+      }));
       const dispatch = vi.fn();
       window.alert = vi.fn();
       api.downVoteComment = () => Promise.reject(fakeErrorResponse);
