@@ -5,9 +5,8 @@ import { postedAt } from '../utils';
 import { asyncUpVoteDetailThreadComment, asyncDownVoteDetailThreadComment } from '../states/detailThread/action';
 
 export function CommentList() {
-  const {
-    detailThread, authUser,
-  } = useSelector((states) => states);
+  const detailThread = useSelector((states) => states.detailThread);
+  const authUser = useSelector((states) => states.authUser);
 
   const dispatch = useDispatch();
 
@@ -18,38 +17,44 @@ export function CommentList() {
   const [commentVotes, setCommentVotes] = useState({});
 
   useEffect(() => {
-    /** buat object untuk menampung data comment */
-    const initialCommentVotes = {};
-    /** iterasi semua comment untuk mendapatkan data apakah sudah di up atau down vote */
-    comments.forEach((comment) => {
-      const { id, upVotesBy, downVotesBy } = comment;
-      /**
+    if (authUser) {
+      /** buat object untuk menampung data comment */
+      const initialCommentVotes = {};
+      /** iterasi semua comment untuk mendapatkan data apakah sudah di up atau down vote */
+      comments.forEach((comment) => {
+        const { id, upVotesBy, downVotesBy } = comment;
+        /**
        * simpan nilai pada object apakah sudah up vote atau down vote
        * dengan nilai keynya adalah dari id comment yang unik
        */
-      initialCommentVotes[id] = {
-        alreadyUpvoted: upVotesBy.includes(authUser.id),
-        alreadyDownVoted: downVotesBy.includes(authUser.id),
-      };
-    });
-    /** inisiasikan nilainya untuk render pertama */
-    setCommentVotes(initialCommentVotes);
+        initialCommentVotes[id] = {
+          alreadyUpvoted: upVotesBy.includes(authUser.id),
+          alreadyDownVoted: downVotesBy.includes(authUser.id),
+        };
+      });
+      /** inisiasikan nilainya untuk render pertama */
+      setCommentVotes(initialCommentVotes);
+    }
   }, [comments, authUser]);
 
   const handleUpVote = (commentId) => {
     dispatch(asyncUpVoteDetailThreadComment({ threadId, commentId }));
-    setCommentVotes((prevVotes) => ({
-      ...prevVotes,
-      [commentId]: { ...prevVotes[commentId], alreadyUpvoted: true },
-    }));
+    if (authUser) {
+      setCommentVotes((prevVotes) => ({
+        ...prevVotes,
+        [commentId]: { ...prevVotes[commentId], alreadyUpvoted: true },
+      }));
+    }
   };
 
   const handleDownVote = (commentId) => {
     dispatch(asyncDownVoteDetailThreadComment({ threadId, commentId }));
-    setCommentVotes((prevVotes) => ({
-      ...prevVotes,
-      [commentId]: { ...prevVotes[commentId], alreadyDownVoted: true },
-    }));
+    if (authUser) {
+      setCommentVotes((prevVotes) => ({
+        ...prevVotes,
+        [commentId]: { ...prevVotes[commentId], alreadyDownVoted: true },
+      }));
+    }
   };
 
   return (
