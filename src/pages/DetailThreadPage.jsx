@@ -8,9 +8,7 @@ import { DetailThread } from '../components/DetailThread';
 import { GiveComment } from '../components/GiveComment';
 
 export function DetailThreadPage() {
-  const {
-    detailThread,
-  } = useSelector((states) => states);
+  const detailThread = useSelector((states) => states.detailThread);
   const dispatch = useDispatch();
 
   const { id } = useParams();

@@ -14,7 +14,7 @@ export function DetailThread({
   ownerName,
   avatar,
 }) {
-  const { authUser } = useSelector((states) => states);
+  const authUser = useSelector((states) => states.authUser);
   const dispatch = useDispatch();
 
   const [alreadyUpvoted, setAlreadyUpvoted] = useState(false);

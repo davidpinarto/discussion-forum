@@ -4,9 +4,7 @@ import { Link } from 'react-router-dom';
 import { ThreadInfo } from './ThreadInfo';
 
 export function ThreadList({ filteredThreads }) {
-  const {
-    threads,
-  } = useSelector((states) => states);
+  const threads = useSelector((states) => states.threads);
 
   if (filteredThreads) {
     return (

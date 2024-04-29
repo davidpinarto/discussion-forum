@@ -2,9 +2,7 @@ import React from 'react';
 import { useSelector } from 'react-redux';
 
 export function CategoryList({ selectedCategory, onThreadFilter }) {
-  const {
-    threads,
-  } = useSelector((states) => states);
+  const threads = useSelector((states) => states.threads);
 
   const uniqueCategories = [...new Set(threads.map((thread) => thread.category))];
 

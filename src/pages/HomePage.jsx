@@ -7,7 +7,8 @@ import { asyncGetAllThreads } from '../states/threads/action';
 import { asyncGetAllUsers } from '../states/users/action';
 
 export function HomePage() {
-  const { authUser, threads } = useSelector((states) => states);
+  const authUser = useSelector((states) => states.authUser);
+  const threads = useSelector((states) => states.threads);
   const dispatch = useDispatch();
 
   React.useEffect(() => {

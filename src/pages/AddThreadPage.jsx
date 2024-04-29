@@ -5,7 +5,7 @@ import { AddThreadForm } from '../components/AddThreadForm';
 import { asyncAddNewThreads } from '../states/threads/action';
 
 export function AddThreadPage() {
-  const { authUser } = useSelector((states) => states);
+  const authUser = useSelector((states) => states.authUser);
   const navigate = useNavigate();
   const dispatch = useDispatch();
   React.useEffect(() => {

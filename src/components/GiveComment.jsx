@@ -4,7 +4,7 @@ import { Link } from 'react-router-dom';
 import useInput from '../hooks/useInput';
 
 export function GiveComment({ sendComment }) {
-  const { authUser } = useSelector((states) => states);
+  const authUser = useSelector((states) => states.authUser);
   const [comment, onCommentChangeEventHandler] = useInput('');
 
   const onSentCommentEventHandler = () => {

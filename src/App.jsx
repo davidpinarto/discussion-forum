@@ -7,9 +7,7 @@ import { asyncPreloadProcess } from './states/isPreload/action';
 import Loading from './components/Loading';
 
 function App() {
-  const {
-    isPreload = false,
-  } = useSelector((states) => states);
+  const isPreload = useSelector((states) => states.isPreload);
 
   const dispatch = useDispatch();
 

@@ -8,7 +8,9 @@ import { asyncDownVoteThread, asyncUpVoteThread } from '../states/threads/action
 export function ThreadInfo({
   upVotesBy, downVotesBy, totalComments, createdAt, ownerId, threadId,
 }) {
-  const { users, authUser, threads } = useSelector((states) => states);
+  const users = useSelector((states) => states.users);
+  const authUser = useSelector((states) => states.authUser);
+  const threads = useSelector((states) => states.threads);
   const dispatch = useDispatch();
 
   const [alreadyUpvoted, setAlreadyUpvoted] = useState(false);
