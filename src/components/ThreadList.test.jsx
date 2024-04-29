@@ -3,7 +3,9 @@ import { BrowserRouter } from 'react-router-dom';
 import {
   describe, it, expect, afterEach, beforeEach,
 } from 'vitest';
-import { cleanup, render, act } from '@testing-library/react';
+import {
+  cleanup, render, act, fireEvent,
+} from '@testing-library/react';
 import matchers from '@testing-library/jest-dom/matchers';
 import { Provider } from 'react-redux';
 import { configureStore } from '@reduxjs/toolkit';
@@ -153,6 +155,35 @@ describe('ThreadList component', () => {
     threadListItem.forEach((threadItem, index) => {
       const threadLink = getByText(mockedThreads[index].title);
       expect(threadLink).toHaveAttribute('href', `/threads/${mockedThreads[index].id}`);
+    });
+  });
+
+  it('should navigate to the /threads/:id link when the title is clicked', async () => {
+    const mockThreadsReducer = (threads = mockedThreads) => threads;
+    const mockUsersReducer = (users = mockedUsers) => users;
+    const mockStores = configureStore({
+      reducer: {
+        threads: mockThreadsReducer,
+        users: mockUsersReducer,
+      },
+    });
+
+    const { getByText, container } = await act(async () => render(
+      <BrowserRouter>
+        <Provider store={mockStores}>
+          <ThreadList />
+        </Provider>
+      </BrowserRouter>,
+    ));
+
+    const threadListItemLink = container.querySelectorAll('.thread-list > li > h2 > a');
+
+    threadListItemLink.forEach((threadItemLink, index) => {
+      const threadLink = getByText(mockedThreads[index].title);
+
+      fireEvent.click(threadLink);
+
+      expect(window.location.pathname).toBe(`/threads/${mockedThreads[index].id}`);
     });
   });
 });
