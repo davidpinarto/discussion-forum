@@ -65,11 +65,10 @@ describe('detailThread thunks', () => {
         ],
       };
       api.getDetailThread = () => Promise.resolve(fakeDetailThreadResponse);
-      const fakeId = 'user-123';
 
       const dispatch = vi.fn();
 
-      await asyncGetDetailThread(fakeId)(dispatch);
+      await asyncGetDetailThread('thread-1')(dispatch);
 
       expect(dispatch).toHaveBeenCalledWith(showLoading());
       expect(dispatch).toHaveBeenCalledWith(setDetailThreadActionCreator(fakeDetailThreadResponse));
@@ -78,12 +77,11 @@ describe('detailThread thunks', () => {
 
     it('should dispatch action and call alert correctly when data fetching failed', async () => {
       api.getDetailThread = () => Promise.reject(fakeErrorResponse);
-      const fakeId = 'user-123';
 
       const dispatch = vi.fn();
       window.alert = vi.fn();
 
-      await asyncGetDetailThread(fakeId)(dispatch);
+      await asyncGetDetailThread('thread-1')(dispatch);
 
       expect(dispatch).toHaveBeenCalledWith(showLoading());
       expect(dispatch).toHaveBeenCalledWith(hideLoading());
