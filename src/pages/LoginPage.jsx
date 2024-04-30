@@ -1,16 +1,20 @@
 import React from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { LoginForm } from '../components/LoginForm';
 import { asyncSetAuthUser } from '../states/authUser/action';
 
 export function LoginPage() {
+  const authUser = useSelector((states) => states.authUser);
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const onLogin = ({ email, password }) => {
     dispatch(asyncSetAuthUser({ email, password }));
-    navigate('/');
   };
+
+  if(authUser) {
+    navigate('/')
+  }
 
   return (
     <div className="login-container">
