@@ -63,14 +63,14 @@ header {
   background-color: var(--secondary-background-color);
 }
 
-#logo {
+/* #logo {
   background-color: var(--button-background);
   padding: 1rem;
   border-radius: 1rem;
   color: var(--primary-text-color-icon);
   font-weight: bold;
   font-size: 32px;
-}
+} */
 
 nav > ul {
   display: flex;

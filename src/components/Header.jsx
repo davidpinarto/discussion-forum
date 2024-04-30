@@ -5,7 +5,7 @@ import { Navigation } from './Navigation';
 export function Header() {
   return (
     <header>
-      <Logo />
+      <Logo logoName="DiForum" type="blackInPink" />
       <Navigation />
     </header>
   );

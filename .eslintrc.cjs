@@ -5,7 +5,8 @@ module.exports = {
     node: true,
     'cypress/globals': true,
   },
-  extends: 'airbnb',
+  extends: ['airbnb', 'plugin:storybook/recommended', 'plugin:cypress/recommended',
+  ],
   overrides: [
     {
       env: {
@@ -36,5 +37,8 @@ module.exports = {
     'consistent-return': 'off',
     'import/no-extraneous-dependencies': 'off',
     'default-param-last': 'off',
+    'react/function-component-definition': 'off',
+    'react/jsx-props-no-spreading': 'off',
+    'react/react-in-jsx-scope': 'off',
   },
 };
