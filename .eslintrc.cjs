@@ -34,5 +34,6 @@ module.exports = {
     'no-case-declarations': 'off',
     'consistent-return': 'off',
     'import/no-extraneous-dependencies': 'off',
+    'default-param-last': 'off',
   },
 };
