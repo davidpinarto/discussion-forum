@@ -1,7 +1,10 @@
 /**
- * - asyncSetAuthUser thunk
- *   - should dispatch action correctly when data fetching is success
+ * #authUser thunk
+ * - asyncSetAuthUser thunks
+ *   - should dispatch action correctly and set authUser when data fetching is success
  *   - should dispatch action correctly and call alert correctly when data fetching failed
+ * - asyncUnsetAuthUser thunk
+ *   - should dispatch action and unset authUser data correctly
  */
 
 import {
@@ -42,7 +45,7 @@ describe('authUser thunks', () => {
       delete api._login;
     });
 
-    it('should dispatch action correctly when data fetching success', async () => {
+    it('should dispatch action correctly and set authUser when data fetching is success', async () => {
       api.login = () => Promise.resolve(fakeLoginResponse);
       api.getOwnProfile = () => Promise.resolve(fakeUserResponse);
 
@@ -81,7 +84,7 @@ describe('authUser thunks', () => {
       delete api._putAccessToken;
     });
 
-    it('should dispatch action correctly when data fetching success', () => {
+    it('should dispatch action and unset authUser data correctly', () => {
       api.putAccessToken = () => Promise.resolve();
 
       const dispatch = vi.fn();

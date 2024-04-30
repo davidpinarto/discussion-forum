@@ -1,8 +1,30 @@
+/**
+ * - detailThreadReducers function
+ *   - should return detailThread initial state when give by unknown action
+ *   - should return the detailThread when given by SET_DETAIL_THREAD action
+ *   - should return new detailThread with added user id in upVotesBy thread when given by
+ *     TOGGLE_UP_VOTE_DETAIL_THREAD action
+ *   - should return new detailThread with added user id in downVotesBy thread when given by
+ *     TOGGLE_DOWN_VOTE_DETAIL_THREAD action
+ *   - should return new detailThread with removed user id in upVotesBy thread when given by
+ *     NEUTRALIZE_DETAIL_THREAD_UPVOTE action
+ *   - should return new detailThread with removed user id in downVotesBy thread when given by
+ *     NEUTRALIZE_DETAIL_THREAD_DOWN_VOTE action
+ *   - should return new detailThread with added user id in upVotesBy comment when given by
+ *     TOGGLE_UP_VOTE_DETAIL_THREAD_COMMENT action
+ *   - should return new detailThread with added user id in downVotesBy comment when given by
+ *     TOGGLE_DOWN_VOTE_DETAIL_THREAD_COMMENT action
+ *   - should return new detailThread with removed user id in upVotesBy comment when given by
+ *     NEUTRALIZE_DETAIL_THREAD_COMMENT_UPVOTE action
+ *   - should return new detailThread with removed user id in downVotesBy comment when given by
+ *     NEUTRALIZE_DETAIL_THREAD_COMMENT_DOWN_VOTE_COMMENT action
+ */
+
 import { describe, it, expect } from 'vitest';
 import { detailThreadReducer } from './reducer';
 
 describe('detailThreadReducer function', () => {
-  it('should return detail threads initial state when give by unknown action', () => {
+  it('should return detailThread initial state when give by unknown action', () => {
     const initialState = [];
     const action = { type: 'UNKNOWN' };
 
@@ -11,7 +33,7 @@ describe('detailThreadReducer function', () => {
     expect(nextState).toEqual(initialState);
   });
 
-  it('should return the detail threads with given by SET_DETAIL_THREAD action', () => {
+  it('should return the detailThread when given by SET_DETAIL_THREAD action', () => {
     const initialState = [];
     const action = {
       type: 'SET_DETAIL_THREAD',
@@ -52,7 +74,7 @@ describe('detailThreadReducer function', () => {
     expect(nextState).toEqual(action.payload.detailThread);
   });
 
-  it('should return the detail threads with modified upVotesBy by added the userId in upVotesBy when action is TOGGLE_UP_VOTE_DETAIL_THREAD action', () => {
+  it('should return new detailThread with added user id in upVotesBy thread when given by TOGGLE_UP_VOTE_DETAIL_THREAD action', () => {
     const detailThread = {
       id: 'thread-1',
       title: 'Thread Pertama',
@@ -120,7 +142,7 @@ describe('detailThreadReducer function', () => {
     });
   });
 
-  it('should return the detail threads with modified downVotesBy by added the userId in downVotesBy when action is TOGGLE_DOWN_VOTE_DETAIL_THREAD action', () => {
+  it('should return new detailThread with added user id in downVotesBy thread when given by TOGGLE_DOWN_VOTE_DETAIL_THREAD action', () => {
     const detailThread = {
       id: 'thread-1',
       title: 'Thread Pertama',
@@ -188,7 +210,7 @@ describe('detailThreadReducer function', () => {
     });
   });
 
-  it('should return the detail threads with modified upVotesBy by remove the userId in upVotesBy when action is NEUTRALIZE_DETAIL_THREAD_UPVOTE action', () => {
+  it('should return new detailThread with removed user id in upVotesBy thread when given by NEUTRALIZE_DETAIL_THREAD_UPVOTE action', () => {
     const detailThread = {
       id: 'thread-1',
       title: 'Thread Pertama',
@@ -256,7 +278,7 @@ describe('detailThreadReducer function', () => {
     });
   });
 
-  it('should return the detail threads with modified downVotesBy by remove the userId in downVotesBy when action is NEUTRALIZE_DETAIL_THREAD_DOWN_VOTE action', () => {
+  it('should return new detailThread with removed user id in downVotesBy thread when given by NEUTRALIZE_DETAIL_THREAD_DOWN_VOTE action', () => {
     const detailThread = {
       id: 'thread-1',
       title: 'Thread Pertama',
@@ -324,7 +346,7 @@ describe('detailThreadReducer function', () => {
     });
   });
 
-  it('should return the detail threads with modified comments upVotesBy by added the userId in comments upVotesBy when action is TOGGLE_UP_VOTE_DETAIL_THREAD_COMMENT action', () => {
+  it('should return new detailThread with added user id in upVotesBy comment when given by TOGGLE_UP_VOTE_DETAIL_THREAD_COMMENT action', () => {
     const detailThread = {
       id: 'thread-1',
       title: 'Thread Pertama',
@@ -392,7 +414,7 @@ describe('detailThreadReducer function', () => {
     });
   });
 
-  it('should return the detail threads with modified comments downVotesBy by added the userId in comments downVotesBy when action is TOGGLE_DOWN_VOTE_DETAIL_THREAD_COMMENT action', () => {
+  it('should return new detailThread with added user id in downVotesBy comment when given by TOGGLE_DOWN_VOTE_DETAIL_THREAD_COMMENT action', () => {
     const detailThread = {
       id: 'thread-1',
       title: 'Thread Pertama',
@@ -460,7 +482,7 @@ describe('detailThreadReducer function', () => {
     });
   });
 
-  it('should return the detail threads with modified comments upVotesBy by remove the userId in comments upVotesBy when action is NEUTRALIZE_DETAIL_THREAD_COMMENT_UPVOTE action', () => {
+  it('should return new detailThread with removed user id in upVotesBy comment when given by NEUTRALIZE_DETAIL_THREAD_COMMENT_UPVOTE action', () => {
     const detailThread = {
       id: 'thread-1',
       title: 'Thread Pertama',
@@ -529,7 +551,7 @@ describe('detailThreadReducer function', () => {
     });
   });
 
-  it('should return the detail threads with modified comments downVotesBy by remove the userId in comments downVotesBy when action is NEUTRALIZE_DETAIL_THREAD_COMMENT_DOWN_VOTE_COMMENT action', () => {
+  it('should return new detailThread with removed user id in downVotesBy comment when given by NEUTRALIZE_DETAIL_THREAD_COMMENT_DOWN_VOTE_COMMENT action', () => {
     const detailThread = {
       id: 'thread-1',
       title: 'Thread Pertama',

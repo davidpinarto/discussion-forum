@@ -24,7 +24,7 @@ describe('authUserReducer function', () => {
       type: 'SET_AUTH_USER',
       payload: {
         authUser: {
-          id: 'john_doe',
+          id: 'users-1',
           name: 'John Doe',
           email: 'john@example.com',
           avatar: 'https://generated-image-url.jpg',
@@ -39,17 +39,7 @@ describe('authUserReducer function', () => {
 
   it('should return null when the action is UNSET_AUTH_USER', () => {
     const initialState = [];
-    const action = {
-      type: 'UNSET_AUTH_USER',
-      payload: {
-        authUser: {
-          id: 'john_doe',
-          name: 'John Doe',
-          email: 'john@example.com',
-          avatar: 'https://generated-image-url.jpg',
-        },
-      },
-    };
+    const action = { type: 'UNSET_AUTH_USER' };
 
     const nextState = authUserReducer(initialState, action);
 

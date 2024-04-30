@@ -1,3 +1,54 @@
+/**
+ * #detailThread thunks
+ * - asyncGetDetailThread thunk
+ *   - should dispatch action correctly and set detailThread when data fetching is success
+ *   - should dispatch action correctly and call alert correctly when data fetching failed
+ * - asyncAddNewCommentOnThread thunk
+ *   - should dispatch action correctly, create new comment, call alert,
+ *     and set new detailThread when data fetching is success
+ *   - should dispatch action correctly and call alert correctly when data fetching failed
+ * - asyncUpVoteDetailThread thunk
+ *   - should call alert when authUser state is null
+ *   - when user already up vote the thread:
+ *     - should neutralize up vote when user already up vote the thread
+ *     - should call alert when data fetching is failed and undo the neutralize up vote
+ *   - when user has not up voted the thread:
+ *     - when user already down vote the thread:
+ *       - should neutralize down vote when user already down vote the thread
+ *     - should dispatch action correctly and up vote the thread when data fetching is success
+ *     - should call alert when data fetching is failed and undo the neutralize up vote
+ * - asyncDownVoteDetailThread thunk
+ *   - should call alert when authUser state is null
+ *   - when user already down vote the thread:
+ *     - should neutralize down vote when user already down vote the thread
+ *     - should call alert when data fetching is failed and undo the neutralize down vote
+ *   - when user has not down voted the thread:
+ *     - when user already up vote the thread:
+ *       - should neutralize up vote when user already up vote the thread
+ *     - should dispatch action correctly and down vote the thread when data fetching is success
+ *     - should call alert when data fetching is failed and undo the neutralize down vote
+ * - asyncUpVoteDetailThreadComment thunk
+ *   - should call alert when authUser state is null
+ *   - when user already up vote the comment:
+ *     - should neutralize up vote when user already up vote the comment
+ *     - should call alert when data fetching is failed and undo the neutralize up vote
+ *   - when user has not up voted the comment:
+ *     - when user already down vote the comment:
+ *       - should neutralize down vote when user already down vote the comment
+ *     - should dispatch action correctly and up vote the comment when data fetching is success
+ *     - should call alert when data fetching is failed and undo the neutralize up vote
+ * - asyncDownVoteDetailThreadComment thunk
+ *   - should call alert when authUser state is null
+ *   - when user already down vote the comment:
+ *     - should neutralize down vote when user already down vote the comment
+ *     - should call alert when data fetching is failed and undo the neutralize down vote
+ *   - when user has not down voted the comment:
+ *     - when user already up vote the comment:
+ *       - should neutralize up vote when user already up vote the comment
+ *     - should dispatch action correctly and down vote the comment when data fetching is success
+ *     - should call alert when data fetching is failed and undo the neutralize down vote
+ */
+
 import {
   describe, beforeEach, afterEach, it, vi, expect,
 } from 'vitest';
@@ -75,7 +126,7 @@ describe('detailThread thunks', () => {
       delete api._getDetailThread;
     });
 
-    it('should dispatch action correctly when data fetching success', async () => {
+    it('should dispatch action correctly and set detailThread when data fetching is success', async () => {
       const fakeDetailThreadResponse = {
         id: 'thread-1',
         title: 'Thread Pertama',
@@ -115,7 +166,7 @@ describe('detailThread thunks', () => {
       expect(dispatch).toHaveBeenCalledWith(hideLoading());
     });
 
-    it('should dispatch action and call alert correctly when data fetching failed', async () => {
+    it('should dispatch action correctly and call alert correctly when data fetching failed', async () => {
       api.getDetailThread = () => Promise.reject(fakeErrorResponse);
 
       const dispatch = vi.fn();
@@ -143,7 +194,7 @@ describe('detailThread thunks', () => {
       delete api._createComment;
     });
 
-    it('should dispatch action correctly when data fetching success', async () => {
+    it('should dispatch action correctly, create new comment, call alert, and set new detailThread when data fetching is success', async () => {
       const fakeDetailThreadResponse = {
         id: 'thread-1',
         title: 'Thread Pertama',
@@ -187,7 +238,7 @@ describe('detailThread thunks', () => {
       expect(spyAlert).toHaveBeenCalledWith('Add new comment success!');
     });
 
-    it('should dispatch action and call alert correctly when data fetching failed', async () => {
+    it('should dispatch action correctly and call alert correctly when data fetching failed', async () => {
       api.createComment = () => Promise.reject(fakeErrorResponse);
       const fakePayload = { id: 'thread-123', content: 'this is comment' };
 
@@ -216,7 +267,7 @@ describe('detailThread thunks', () => {
       delete api._upVoteThread;
     });
 
-    it('should alert You must be login to vote a thread! when authUser is null', async () => {
+    it('should call alert when authUser state is null', async () => {
       const getState = vi.fn(() => initialState);
       const dispatch = vi.fn();
       const spyAlert = vi.spyOn(window, 'alert');
@@ -229,7 +280,7 @@ describe('detailThread thunks', () => {
       expect(getState).toHaveBeenCalledTimes(1);
     });
 
-    it('should neutralize detail thread UpVote when user already upvote the thread', async () => {
+    it('should neutralize up vote when user already up vote the thread', async () => {
       const getState = vi.fn(() => ({
         authUser: {
           id: 'users-1',
@@ -259,7 +310,7 @@ describe('detailThread thunks', () => {
       expect(getState).toHaveBeenCalledTimes(1);
     });
 
-    it('should alert error message and undo neutralize detail thread UpVote when data fetching failed', async () => {
+    it('should call alert when data fetching is failed and undo the neutralize up vote', async () => {
       const getState = vi.fn(() => ({
         authUser: {
           id: 'users-1',
@@ -287,34 +338,7 @@ describe('detailThread thunks', () => {
       expect(window.alert).toHaveBeenCalledWith(fakeErrorResponse.message);
     });
 
-    it('should up vote detail thread', async () => {
-      const getState = vi.fn(() => ({
-        ...initialState,
-        authUser: {
-          id: 'users-1',
-          name: 'John Doe',
-          email: 'john@example.com',
-          avatar: 'https://generated-image-url.jpg',
-        },
-      }));
-      const dispatch = vi.fn();
-      api.upVoteThread = () => Promise.resolve({
-        id: 'vote-1',
-        userId: 'users-1',
-        threadId: 'thread-1',
-        voteType: 1,
-      });
-
-      await asyncUpVoteDetailThread('thread-1')(dispatch, getState);
-
-      expect(dispatch).toHaveBeenCalledWith(showLoading());
-      expect(dispatch)
-        .toHaveBeenCalledWith(toggleUpVoteDetailThreadActionCreator({ userId: 'users-1' }));
-      expect(dispatch).toHaveBeenCalledWith(hideLoading());
-      expect(getState).toHaveBeenCalledTimes(1);
-    });
-
-    it('should up vote detail thread and neutralize down vote when user already down vote detail thread', async () => {
+    it('should neutralize down vote when user already down vote the thread', async () => {
       const getState = vi.fn(() => ({
         authUser: {
           id: 'users-1',
@@ -346,7 +370,34 @@ describe('detailThread thunks', () => {
       expect(getState).toHaveBeenCalledTimes(1);
     });
 
-    it('should undo up vote detail thread when data fetching is fail', async () => {
+    it('should dispatch action correctly and up vote the thread when data fetching is success', async () => {
+      const getState = vi.fn(() => ({
+        ...initialState,
+        authUser: {
+          id: 'users-1',
+          name: 'John Doe',
+          email: 'john@example.com',
+          avatar: 'https://generated-image-url.jpg',
+        },
+      }));
+      const dispatch = vi.fn();
+      api.upVoteThread = () => Promise.resolve({
+        id: 'vote-1',
+        userId: 'users-1',
+        threadId: 'thread-1',
+        voteType: 1,
+      });
+
+      await asyncUpVoteDetailThread('thread-1')(dispatch, getState);
+
+      expect(dispatch).toHaveBeenCalledWith(showLoading());
+      expect(dispatch)
+        .toHaveBeenCalledWith(toggleUpVoteDetailThreadActionCreator({ userId: 'users-1' }));
+      expect(dispatch).toHaveBeenCalledWith(hideLoading());
+      expect(getState).toHaveBeenCalledTimes(1);
+    });
+
+    it('should call alert when data fetching is failed and undo the neutralize up vote', async () => {
       const getState = vi.fn(() => ({
         ...initialState,
         authUser: {
@@ -386,7 +437,7 @@ describe('detailThread thunks', () => {
       delete api._downVoteThread;
     });
 
-    it('should alert You must be login to vote a thread! when authUser is null', async () => {
+    it('should call alert when authUser state is null', async () => {
       const getState = vi.fn(() => initialState);
       const dispatch = vi.fn();
       const spyAlert = vi.spyOn(window, 'alert');
@@ -399,7 +450,7 @@ describe('detailThread thunks', () => {
       expect(getState).toHaveBeenCalledTimes(1);
     });
 
-    it('should neutralize detail thread downVote when user already downvote the thread', async () => {
+    it('should neutralize down vote when user already down vote the thread', async () => {
       const getState = vi.fn(() => ({
         authUser: {
           id: 'users-1',
@@ -429,7 +480,7 @@ describe('detailThread thunks', () => {
       expect(getState).toHaveBeenCalledTimes(1);
     });
 
-    it('should alert error message and undo neutralize detail thread down vote when data fetching failed', async () => {
+    it('should call alert when data fetching is failed and undo the neutralize down vote', async () => {
       const getState = vi.fn(() => ({
         authUser: {
           id: 'users-1',
@@ -457,34 +508,7 @@ describe('detailThread thunks', () => {
       expect(window.alert).toHaveBeenCalledWith(fakeErrorResponse.message);
     });
 
-    it('should down vote detail thread', async () => {
-      const getState = vi.fn(() => ({
-        ...initialState,
-        authUser: {
-          id: 'users-1',
-          name: 'John Doe',
-          email: 'john@example.com',
-          avatar: 'https://generated-image-url.jpg',
-        },
-      }));
-      const dispatch = vi.fn();
-      api.downVoteThread = () => Promise.resolve({
-        id: 'vote-1',
-        userId: 'users-1',
-        threadId: 'thread-1',
-        voteType: -1,
-      });
-
-      await asyncDownVoteDetailThread('thread-1')(dispatch, getState);
-
-      expect(dispatch).toHaveBeenCalledWith(showLoading());
-      expect(dispatch)
-        .toHaveBeenCalledWith(toggleDownVoteDetailThreadActionCreator({ userId: 'users-1' }));
-      expect(dispatch).toHaveBeenCalledWith(hideLoading());
-      expect(getState).toHaveBeenCalledTimes(1);
-    });
-
-    it('should down vote detail thread and neutralize up vote when user already up vote detail thread', async () => {
+    it('should neutralize up vote when user already up vote the thread', async () => {
       const getState = vi.fn(() => ({
         authUser: {
           id: 'users-1',
@@ -516,7 +540,34 @@ describe('detailThread thunks', () => {
       expect(getState).toHaveBeenCalledTimes(1);
     });
 
-    it('should undo down vote detail thread when data fetching is fail', async () => {
+    it('should dispatch action correctly and down vote the thread when data fetching is success', async () => {
+      const getState = vi.fn(() => ({
+        ...initialState,
+        authUser: {
+          id: 'users-1',
+          name: 'John Doe',
+          email: 'john@example.com',
+          avatar: 'https://generated-image-url.jpg',
+        },
+      }));
+      const dispatch = vi.fn();
+      api.downVoteThread = () => Promise.resolve({
+        id: 'vote-1',
+        userId: 'users-1',
+        threadId: 'thread-1',
+        voteType: -1,
+      });
+
+      await asyncDownVoteDetailThread('thread-1')(dispatch, getState);
+
+      expect(dispatch).toHaveBeenCalledWith(showLoading());
+      expect(dispatch)
+        .toHaveBeenCalledWith(toggleDownVoteDetailThreadActionCreator({ userId: 'users-1' }));
+      expect(dispatch).toHaveBeenCalledWith(hideLoading());
+      expect(getState).toHaveBeenCalledTimes(1);
+    });
+
+    it('should call alert when data fetching is failed and undo the neutralize down vote', async () => {
       const getState = vi.fn(() => ({
         ...initialState,
         authUser: {
@@ -556,7 +607,7 @@ describe('detailThread thunks', () => {
       delete api._upVoteComment;
     });
 
-    it('should alert You must be login to vote a comment thread! when authUser is null', async () => {
+    it('should call alert when authUser state is null', async () => {
       const getState = vi.fn(() => initialState);
       const dispatch = vi.fn();
       const spyAlert = vi.spyOn(window, 'alert');
@@ -569,7 +620,7 @@ describe('detailThread thunks', () => {
       expect(getState).toHaveBeenCalledTimes(1);
     });
 
-    it('should neutralize detail thread comment UpVote when user already upvote the comment in the thread', async () => {
+    it('should neutralize up vote when user already up vote the comment', async () => {
       const getState = vi.fn(() => ({
         authUser: {
           id: 'users-1',
@@ -604,7 +655,7 @@ describe('detailThread thunks', () => {
       expect(getState).toHaveBeenCalledTimes(1);
     });
 
-    it('should alert error message and undo neutralize detail thread comment UpVote when data fetching failed', async () => {
+    it('should call alert when data fetching is failed and undo the neutralize up vote', async () => {
       const getState = vi.fn(() => ({
         authUser: {
           id: 'users-1',
@@ -637,34 +688,7 @@ describe('detailThread thunks', () => {
       expect(window.alert).toHaveBeenCalledWith(fakeErrorResponse.message);
     });
 
-    it('should up vote detail thread comment', async () => {
-      const getState = vi.fn(() => ({
-        ...initialState,
-        authUser: {
-          id: 'users-1',
-          name: 'John Doe',
-          email: 'john@example.com',
-          avatar: 'https://generated-image-url.jpg',
-        },
-      }));
-      const dispatch = vi.fn();
-      api.upVoteComment = () => Promise.resolve({
-        id: 'vote-1',
-        userId: 'users-1',
-        commentId: 'comment-1',
-        voteType: 1,
-      });
-
-      await asyncUpVoteDetailThreadComment({ threadId: 'thread-1', commentId: 'comment-1' })(dispatch, getState);
-
-      expect(dispatch).toHaveBeenCalledWith(showLoading());
-      expect(dispatch)
-        .toHaveBeenCalledWith(toggleUpVoteDetailThreadCommentActionCreator({ commentId: 'comment-1', userId: 'users-1' }));
-      expect(dispatch).toHaveBeenCalledWith(hideLoading());
-      expect(getState).toHaveBeenCalledTimes(1);
-    });
-
-    it('should up vote detail thread comment and neutralize down vote comment when user already down vote comment', async () => {
+    it('should neutralize down vote when user already down vote the comment', async () => {
       const getState = vi.fn(() => ({
         authUser: {
           id: 'users-1',
@@ -701,7 +725,34 @@ describe('detailThread thunks', () => {
       expect(getState).toHaveBeenCalledTimes(1);
     });
 
-    it('should undo up vote detail thread comment when data fetching is fail', async () => {
+    it('should dispatch action correctly and up vote the comment when data fetching is success', async () => {
+      const getState = vi.fn(() => ({
+        ...initialState,
+        authUser: {
+          id: 'users-1',
+          name: 'John Doe',
+          email: 'john@example.com',
+          avatar: 'https://generated-image-url.jpg',
+        },
+      }));
+      const dispatch = vi.fn();
+      api.upVoteComment = () => Promise.resolve({
+        id: 'vote-1',
+        userId: 'users-1',
+        commentId: 'comment-1',
+        voteType: 1,
+      });
+
+      await asyncUpVoteDetailThreadComment({ threadId: 'thread-1', commentId: 'comment-1' })(dispatch, getState);
+
+      expect(dispatch).toHaveBeenCalledWith(showLoading());
+      expect(dispatch)
+        .toHaveBeenCalledWith(toggleUpVoteDetailThreadCommentActionCreator({ commentId: 'comment-1', userId: 'users-1' }));
+      expect(dispatch).toHaveBeenCalledWith(hideLoading());
+      expect(getState).toHaveBeenCalledTimes(1);
+    });
+
+    it('should call alert when data fetching is failed and undo the neutralize up vote', async () => {
       const getState = vi.fn(() => ({
         ...initialState,
         authUser: {
@@ -741,7 +792,7 @@ describe('detailThread thunks', () => {
       delete api._downVoteComment;
     });
 
-    it('should alert You must be login to vote a comment thread! when authUser is null', async () => {
+    it('should call alert when authUser state is null', async () => {
       const getState = vi.fn(() => initialState);
       const dispatch = vi.fn();
       const spyAlert = vi.spyOn(window, 'alert');
@@ -754,7 +805,7 @@ describe('detailThread thunks', () => {
       expect(getState).toHaveBeenCalledTimes(1);
     });
 
-    it('should neutralize detail thread comment down Vote when user already down vote the comment in the thread', async () => {
+    it('should neutralize down vote when user already down vote the comment', async () => {
       const getState = vi.fn(() => ({
         authUser: {
           id: 'users-1',
@@ -789,7 +840,7 @@ describe('detailThread thunks', () => {
       expect(getState).toHaveBeenCalledTimes(1);
     });
 
-    it('should alert error message and undo neutralize detail thread comment down Vote when data fetching failed', async () => {
+    it('should call alert when data fetching is failed and undo the neutralize down vote', async () => {
       const getState = vi.fn(() => ({
         authUser: {
           id: 'users-1',
@@ -822,34 +873,7 @@ describe('detailThread thunks', () => {
       expect(window.alert).toHaveBeenCalledWith(fakeErrorResponse.message);
     });
 
-    it('should down vote detail thread comment', async () => {
-      const getState = vi.fn(() => ({
-        ...initialState,
-        authUser: {
-          id: 'users-1',
-          name: 'John Doe',
-          email: 'john@example.com',
-          avatar: 'https://generated-image-url.jpg',
-        },
-      }));
-      const dispatch = vi.fn();
-      api.downVoteComment = () => Promise.resolve({
-        id: 'vote-1',
-        userId: 'users-1',
-        commentId: 'comment-1',
-        voteType: -1,
-      });
-
-      await asyncDownVoteDetailThreadComment({ threadId: 'thread-1', commentId: 'comment-1' })(dispatch, getState);
-
-      expect(dispatch).toHaveBeenCalledWith(showLoading());
-      expect(dispatch)
-        .toHaveBeenCalledWith(toggleDownVoteDetailThreadCommentActionCreator({ commentId: 'comment-1', userId: 'users-1' }));
-      expect(dispatch).toHaveBeenCalledWith(hideLoading());
-      expect(getState).toHaveBeenCalledTimes(1);
-    });
-
-    it('should down vote detail thread comment and neutralize up vote comment when user already up vote comment', async () => {
+    it('should neutralize up vote when user already up vote the comment', async () => {
       const getState = vi.fn(() => ({
         authUser: {
           id: 'users-1',
@@ -886,7 +910,34 @@ describe('detailThread thunks', () => {
       expect(getState).toHaveBeenCalledTimes(1);
     });
 
-    it('should undo down vote detail thread comment when data fetching is fail', async () => {
+    it('should dispatch action correctly and down vote the comment when data fetching is success', async () => {
+      const getState = vi.fn(() => ({
+        ...initialState,
+        authUser: {
+          id: 'users-1',
+          name: 'John Doe',
+          email: 'john@example.com',
+          avatar: 'https://generated-image-url.jpg',
+        },
+      }));
+      const dispatch = vi.fn();
+      api.downVoteComment = () => Promise.resolve({
+        id: 'vote-1',
+        userId: 'users-1',
+        commentId: 'comment-1',
+        voteType: -1,
+      });
+
+      await asyncDownVoteDetailThreadComment({ threadId: 'thread-1', commentId: 'comment-1' })(dispatch, getState);
+
+      expect(dispatch).toHaveBeenCalledWith(showLoading());
+      expect(dispatch)
+        .toHaveBeenCalledWith(toggleDownVoteDetailThreadCommentActionCreator({ commentId: 'comment-1', userId: 'users-1' }));
+      expect(dispatch).toHaveBeenCalledWith(hideLoading());
+      expect(getState).toHaveBeenCalledTimes(1);
+    });
+
+    it('should call alert when data fetching is failed and undo the neutralize down vote', async () => {
       const getState = vi.fn(() => ({
         ...initialState,
         authUser: {

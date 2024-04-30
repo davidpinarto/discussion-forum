@@ -1,3 +1,10 @@
+/**
+ * #leaderboards thunks
+ * - asyncGetLeaderboards thunk
+ *   - should dispatch action correctly and set leaderboards when data fetching is success
+ *   - should dispatch action correctly and call alert correctly when data fetching failed
+ */
+
 import {
   describe, beforeEach, afterEach, it, vi, expect,
 } from 'vitest';
@@ -18,19 +25,7 @@ describe('leaderboards thunk', () => {
     delete api._getLeaderboards;
   });
 
-  it('should dispatch action and call alert correctly when data fetching is failed', async () => {
-    api.getLeaderboards = () => Promise.reject(fakeErrorResponse);
-    const dispatch = vi.fn();
-    window.alert = vi.fn();
-
-    await asyncGetLeaderboards()(dispatch);
-
-    expect(dispatch).toHaveBeenCalledWith(showLoading());
-    expect(dispatch).toHaveBeenCalledWith(hideLoading());
-    expect(window.alert).toHaveBeenCalledWith(fakeErrorResponse.message);
-  });
-
-  it('should dispatch action correctly when data fetching is success', async () => {
+  it('should dispatch action correctly and set leaderboards when data fetching is success', async () => {
     const fakeGetLeaderboardsResponse = [
       {
         user: {
@@ -60,5 +55,17 @@ describe('leaderboards thunk', () => {
     expect(dispatch)
       .toHaveBeenCalledWith(setLeaderboardsActionCreator(fakeGetLeaderboardsResponse));
     expect(dispatch).toHaveBeenCalledWith(hideLoading());
+  });
+
+  it('should dispatch action correctly and call alert correctly when data fetching failed', async () => {
+    api.getLeaderboards = () => Promise.reject(fakeErrorResponse);
+    const dispatch = vi.fn();
+    window.alert = vi.fn();
+
+    await asyncGetLeaderboards()(dispatch);
+
+    expect(dispatch).toHaveBeenCalledWith(showLoading());
+    expect(dispatch).toHaveBeenCalledWith(hideLoading());
+    expect(window.alert).toHaveBeenCalledWith(fakeErrorResponse.message);
   });
 });

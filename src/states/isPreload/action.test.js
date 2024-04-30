@@ -1,3 +1,10 @@
+/**
+ * #isPreload thunks
+ * - asyncPreloadProcess thunk
+ *   - should dispatch action correctly and set isPreload when data fetching is success
+ *   - should dispatch action correctly and set authUser to null correctly when data fetching failed
+ */
+
 import {
   describe, beforeEach, afterEach, it, vi, expect,
 } from 'vitest';
@@ -19,19 +26,7 @@ describe('isPreload thunk', () => {
     delete api._getOwnProfile;
   });
 
-  it('should dispatch action and set authUser to null when data fetching is failed then set isPreload to be false', async () => {
-    api.getOwnProfile = () => Promise.reject(fakeErrorResponse);
-    const dispatch = vi.fn();
-
-    await asyncPreloadProcess()(dispatch);
-
-    expect(dispatch).toHaveBeenCalledWith(showLoading());
-    expect(dispatch).toHaveBeenCalledWith(setAuthUserActionCreator(null));
-    expect(dispatch).toHaveBeenCalledWith(setIsPreloadActionCreator(false));
-    expect(dispatch).toHaveBeenCalledWith(hideLoading());
-  });
-
-  it('should dispatch action correctly when data fetching is success', async () => {
+  it('should dispatch action correctly and set isPreload when data fetching is success', async () => {
     const fakeGetOwnProfileResponse = {
       id: 'users-1',
       name: 'John Doe',
@@ -45,6 +40,18 @@ describe('isPreload thunk', () => {
 
     expect(dispatch).toHaveBeenCalledWith(showLoading());
     expect(dispatch).toHaveBeenCalledWith(setAuthUserActionCreator(fakeGetOwnProfileResponse));
+    expect(dispatch).toHaveBeenCalledWith(setIsPreloadActionCreator(false));
+    expect(dispatch).toHaveBeenCalledWith(hideLoading());
+  });
+
+  it('should dispatch action correctly and set authUser to null correctly when data fetching failed', async () => {
+    api.getOwnProfile = () => Promise.reject(fakeErrorResponse);
+    const dispatch = vi.fn();
+
+    await asyncPreloadProcess()(dispatch);
+
+    expect(dispatch).toHaveBeenCalledWith(showLoading());
+    expect(dispatch).toHaveBeenCalledWith(setAuthUserActionCreator(null));
     expect(dispatch).toHaveBeenCalledWith(setIsPreloadActionCreator(false));
     expect(dispatch).toHaveBeenCalledWith(hideLoading());
   });

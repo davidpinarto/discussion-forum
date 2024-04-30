@@ -1,8 +1,14 @@
+/**
+ * - leaderboardsReducers function
+ *   - should return leaderboards initial state when give by unknown action
+ *   - should return the leaderboards when given by SET_LEADERBOARDS action
+ */
+
 import { describe, it, expect } from 'vitest';
 import { leaderboardsReducer } from './reducer';
 
 describe('leaderboardsReducer function', () => {
-  it('should return leaderboardsReducer initial state when give by unknown action', () => {
+  it('should return leaderboards initial state when give by unknown action', () => {
     const initialState = null;
     const action = { type: 'UNKNOWN' };
 
@@ -11,7 +17,7 @@ describe('leaderboardsReducer function', () => {
     expect(nextState).toEqual(initialState);
   });
 
-  it('should return the leaderboards with given by SET_LEADERBOARDS action', () => {
+  it('should return the leaderboards when given by SET_LEADERBOARDS action', () => {
     const initialState = [];
     const action = {
       type: 'SET_LEADERBOARDS',
