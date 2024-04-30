@@ -25,7 +25,7 @@ function App() {
       <div className="app-container">
         <Header />
         <Main />
-        <Footer />
+        <Footer footerContent="created by David Pinarto" type="blackInWhite" />
       </div>
     </>
   );

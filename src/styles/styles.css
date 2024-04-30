@@ -507,13 +507,13 @@ td:nth-child(2) {
   width: auto;
 }
 
-footer {
+/* footer {
   margin-top: auto;
   text-align: center;
   padding: 1rem;
   background-color: var(--secondary-background-color);
   border-top: 5px solid var(--border-color);
-}
+} */
 
 #not-found-page {
   text-align: center;
