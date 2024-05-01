@@ -7,9 +7,11 @@
     "dev": "vite",
     "build": "vite build",
     "preview": "vite preview",
-    "test": "vitest --no-watch && cypress run",
+    "test": "vitest",
+    "e2e": "cypress run",
     "storybook": "storybook dev -p 6006",
-    "build-storybook": "storybook build"
+    "build-storybook": "storybook build",
+    "ci:test": "vitest --no-watch && start-server-and-test dev http-get://0.0.0.0:5173 e2e"
   },
   "dependencies": {
     "@reduxjs/toolkit": "^2.2.3",
@@ -49,6 +51,7 @@
     "eslint-plugin-storybook": "^0.8.0",
     "jsdom": "^24.0.0",
     "prop-types": "^15.8.1",
+    "start-server-and-test": "^2.0.3",
     "storybook": "^8.0.9",
     "vite": "^5.1.4",
     "vitest": "^1.5.2"
