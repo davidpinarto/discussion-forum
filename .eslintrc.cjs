@@ -40,5 +40,6 @@ module.exports = {
     'react/function-component-definition': 'off',
     'react/jsx-props-no-spreading': 'off',
     'react/react-in-jsx-scope': 'off',
+    'no-unused-vars': 'off',
   },
 };

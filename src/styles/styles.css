@@ -135,7 +135,7 @@ main {
   border-left: 5px solid var(--border-color);
   transition: all 0.3s ease;
   padding: 2rem;
-} 
+}
 
 .category-list {
   display: flex;
@@ -143,7 +143,7 @@ main {
   flex-wrap: wrap;
 }
 
-aside  {
+aside {
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -155,10 +155,9 @@ aside > ul:hover {
   border-left: 5px solid var(--border-color-hover);
 }
 
-
 .category-item {
   border: 1px solid var(--border-color);
-  padding: .5rem;
+  padding: 0.5rem;
   cursor: pointer;
 }
 
@@ -221,9 +220,10 @@ aside > ul:hover {
   border-radius: 100%;
 }
 
-.likes, .dislikes {
+.likes,
+.dislikes {
   display: flex;
-  gap: .2rem;
+  gap: 0.2rem;
   align-items: center;
 }
 .likes:hover,
@@ -232,7 +232,8 @@ aside > ul:hover {
   cursor: pointer;
 }
 
-.liked,.disliked {
+.liked,
+.disliked {
   color: var(--border-color-hover);
 }
 
@@ -252,7 +253,7 @@ aside > ul:hover {
 .login-form {
   display: flex;
   flex-direction: column;
-  gap: .5rem;
+  gap: 0.5rem;
 }
 
 .login-form > * {
@@ -261,8 +262,8 @@ aside > ul:hover {
 
 .login-form > input {
   width: auto;
-  padding: .5rem;
-  border-radius: .5rem;
+  padding: 0.5rem;
+  border-radius: 0.5rem;
 }
 
 .login-form > button {
@@ -285,7 +286,7 @@ aside > ul:hover {
 .register-form {
   display: flex;
   flex-direction: column;
-  gap: .5rem;
+  gap: 0.5rem;
 }
 
 .register-form > * {
@@ -294,8 +295,8 @@ aside > ul:hover {
 
 .register-form > input {
   width: auto;
-  padding: .5rem;
-  border-radius: .5rem;
+  padding: 0.5rem;
+  border-radius: 0.5rem;
 }
 
 .register-form > button {
@@ -351,7 +352,6 @@ aside > ul:hover {
   border-right: 5px solid var(--border-color-hover);
 }
 
-
 .detail-comments {
   display: flex;
   flex-direction: column;
@@ -384,15 +384,15 @@ aside > ul:hover {
 .comment-list > li {
   display: flex;
   flex-direction: column;
-  gap: .5rem;
+  gap: 0.5rem;
   border-bottom: 1px solid var(--border-color);
-  padding-bottom: .5rem;
+  padding-bottom: 0.5rem;
 }
 
 .comment-profile-info {
   display: flex;
   align-items: center;
-  gap: .5rem;
+  gap: 0.5rem;
 }
 
 .comment-profile-info > img {
@@ -408,13 +408,13 @@ aside > ul:hover {
 .comment-info > div {
   display: flex;
   align-items: center;
-  gap: .5rem;
+  gap: 0.5rem;
 }
 
 #comment-input {
   resize: vertical;
-  padding: .5rem;
-  border-radius: .5rem;
+  padding: 0.5rem;
+  border-radius: 0.5rem;
 }
 
 /* add thread page */
@@ -434,7 +434,7 @@ aside > ul:hover {
 .add-thread-form {
   display: flex;
   flex-direction: column;
-  gap: .5rem;
+  gap: 0.5rem;
 }
 
 .add-thread-form > * {
@@ -443,13 +443,13 @@ aside > ul:hover {
 
 .add-thread-form > input {
   width: auto;
-  padding: .5rem;
-  border-radius: .5rem;
+  padding: 0.5rem;
+  border-radius: 0.5rem;
 }
 .add-thread-form > textarea {
   width: auto;
-  padding: .5rem;
-  border-radius: .5rem;
+  padding: 0.5rem;
+  border-radius: 0.5rem;
   resize: vertical;
   min-height: 20rem;
 }
@@ -465,7 +465,7 @@ aside > ul:hover {
 }
 table {
   border-collapse: collapse;
-  width: 100%;      
+  width: 100%;
   table-layout: auto;
   border: 5px solid var(--border-color);
 }
@@ -480,10 +480,10 @@ tbody > tr > td {
   border-right: 5px solid var(--border-color);
 }
 
-.table-data-container { 
+.table-data-container {
   display: flex;
   align-items: center;
-  gap: .5rem;
+  gap: 0.5rem;
 }
 .table-data-container > img {
   width: 2rem;
@@ -491,7 +491,8 @@ tbody > tr > td {
   text-align: center;
 }
 
-td, th {
+td,
+th {
   border: 1px solid #dddddd;
   text-align: left;
   padding: 8px;

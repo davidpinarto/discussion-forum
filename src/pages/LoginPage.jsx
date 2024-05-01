@@ -12,8 +12,8 @@ export function LoginPage() {
     dispatch(asyncSetAuthUser({ email, password }));
   };
 
-  if(authUser) {
-    navigate('/')
+  if (authUser) {
+    navigate('/');
   }
 
   return (
