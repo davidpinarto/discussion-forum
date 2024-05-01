@@ -1,9 +1,17 @@
+/**
+ * - LoginForm React Testing Library
+ *   - should handle email typing correctly
+ *   - should handle password typing correctly
+ *   - should call login function when login button is clicked
+ */
+
 import React from 'react';
 import {
   describe, it, expect, afterEach, vi,
 } from 'vitest';
-import { cleanup, render, screen } from '@testing-library/react';
-import userEvent from '@testing-library/user-event';
+import {
+  cleanup, render, fireEvent,
+} from '@testing-library/react';
 import matchers from '@testing-library/jest-dom/matchers';
 import { LoginForm } from './LoginForm';
 
@@ -14,34 +22,34 @@ describe('LoginForm component', () => {
     cleanup();
   });
 
-  it('should handle email typing correctly', async () => {
-    render(<LoginForm login={() => {}} />);
-    const emailInput = await screen.getByPlaceholderText('Email');
+  it('should handle email typing correctly', () => {
+    const { getByPlaceholderText } = render(<LoginForm login={() => {}} />);
+    const emailInput = getByPlaceholderText('Email');
 
-    await userEvent.type(emailInput, 'hebatsekali@email.com');
+    fireEvent.change(emailInput, { target: { value: 'hebatsekali@email.com' } });
 
     expect(emailInput).toHaveValue('hebatsekali@email.com');
   });
 
-  it('should handle password typing correctly', async () => {
-    render(<LoginForm login={() => {}} />);
-    const passwordInput = await screen.getByPlaceholderText('Password');
+  it('should handle password typing correctly', () => {
+    const { getByPlaceholderText } = render(<LoginForm login={() => {}} />);
+    const passwordInput = getByPlaceholderText('Password');
 
-    await userEvent.type(passwordInput, 'hebatsekali');
+    fireEvent.change(passwordInput, { target: { value: 'hebatsekali' } });
 
     expect(passwordInput).toHaveValue('hebatsekali');
   });
 
-  it('should call login function when login button is clicked', async () => {
+  it('should call login function when login button is clicked', () => {
     const mockLogin = vi.fn();
-    render(<LoginForm login={mockLogin} />);
-    const emailInput = await screen.getByPlaceholderText('Email');
-    await userEvent.type(emailInput, 'hebatsekali@email.com');
-    const passwordInput = await screen.getByPlaceholderText('Password');
-    await userEvent.type(passwordInput, 'hebatsekali');
-    const loginButton = await screen.getByRole('button', { name: 'Login' });
+    const { getByPlaceholderText, getByRole } = render(<LoginForm login={mockLogin} />);
+    const emailInput = getByPlaceholderText('Email');
+    fireEvent.change(emailInput, { target: { value: 'hebatsekali@email.com' } });
+    const passwordInput = getByPlaceholderText('Password');
+    fireEvent.change(passwordInput, { target: { value: 'hebatsekali' } });
+    const loginButton = getByRole('button', { name: 'Login' });
 
-    await userEvent.click(loginButton);
+    fireEvent.click(loginButton);
 
     expect(mockLogin).toBeCalledWith({
       email: 'hebatsekali@email.com',

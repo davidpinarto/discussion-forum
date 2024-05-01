@@ -42,12 +42,12 @@ export function ThreadInfo({
       <button className={`likes ${alreadyUpvoted ? 'liked' : ''}`} onClick={() => dispatch(asyncUpVoteThread(threadId))}>
         <FaRegThumbsUp />
         {' '}
-        {upVotesBy}
+        <p>{upVotesBy}</p>
       </button>
-      <button className={`likes ${alreadyDownVoted ? 'disliked' : ''}`} onClick={() => dispatch(asyncDownVoteThread(threadId))}>
+      <button className={`dislikes ${alreadyDownVoted ? 'disliked' : ''}`} onClick={() => dispatch(asyncDownVoteThread(threadId))}>
         <FaRegThumbsDown />
         {' '}
-        {downVotesBy}
+        <p>{downVotesBy}</p>
       </button>
       <div className="comments">
         <FaRegCommentDots />

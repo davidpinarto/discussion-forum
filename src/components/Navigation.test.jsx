@@ -1,3 +1,14 @@
+/**
+ * - Navigation React Testing Library
+ *   - should render navigation correctly when user not logged
+ *   - should render navigation correctly when user is logged
+ *   - should navigate to / when user click Home button
+ *   - should navigate to /leaderboards when user click Leaderboards button
+ *   - should call onSignOut function when user click Logout button
+ *   - should navigate to /login when user click Login button
+ *   - should not render profile-info when window location is on /register
+ */
+
 import React from 'react';
 import { BrowserRouter } from 'react-router-dom';
 import {
@@ -78,29 +89,6 @@ describe('Navigation component', () => {
       .toHaveAttribute('src', 'https://generated-image-url.jpg');
     expect(getByText('John Doe')).toBeInTheDocument();
     expect(getByText('Logout')).toBeInTheDocument();
-  });
-
-  it('should render navigation correctly when user not logged', async () => {
-    const mockAuthUserReducer = (authUser = null) => authUser;
-    const mockStores = configureStore({
-      reducer: {
-        authUser: mockAuthUserReducer,
-      },
-    });
-    const { getByText, container } = await act(async () => render(
-      <BrowserRouter>
-        <Provider store={mockStores}>
-          <Navigation />
-        </Provider>
-      </BrowserRouter>,
-    ));
-
-    expect(getByText('Home')).toBeInTheDocument();
-    expect(getByText('Leaderboards')).toBeInTheDocument();
-    expect(container.querySelector('.profile-info > img'))
-      .toHaveAttribute('src', 'https://ui-avatars.com/api/?name=Guest&background=80CBDC');
-    expect(getByText('Guest')).toBeInTheDocument();
-    expect(getByText('Login')).toBeInTheDocument();
   });
 
   it('should navigate to / when user click Home button', async () => {

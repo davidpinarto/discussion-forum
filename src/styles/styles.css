@@ -221,6 +221,11 @@ aside > ul:hover {
   border-radius: 100%;
 }
 
+.likes, .dislikes {
+  display: flex;
+  gap: .2rem;
+  align-items: center;
+}
 .likes:hover,
 .dislikes:hover {
   color: var(--border-color-hover);
